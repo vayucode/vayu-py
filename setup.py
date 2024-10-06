@@ -10,7 +10,6 @@ setup(
     version=__version__,
     packages=find_packages(),
     install_requires=read_requirements(),    
-    install_requires=[],
     description="The Vayu API client library in Python",
     author="Fadi Atamny",
     author_email="fadi@withvayu.com",
