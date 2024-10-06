@@ -1,9 +1,13 @@
 from setuptools import setup, find_packages
 from vayu_sdk import __version__
+import os
 
 def read_requirements():
-    with open('requirements.txt') as req:
-        return req.read().splitlines()
+    requirements = []
+    if os.path.exists('requirements.txt'):
+        with open('requirements.txt') as req:
+            requirements = req.read().splitlines()
+    return requirements
 
 setup(
     name="vayu-py",
