@@ -1,4 +1,4 @@
-# Vayu API Client Library
+# Vayu API Client Library [![PyPI Latest Version](https://img.shields.io/pypi/v/vayu-py.svg)](https://pypi.org/project/vayu-py/)
 
 ## Overview
 
