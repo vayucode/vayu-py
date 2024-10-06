@@ -19,9 +19,9 @@ pip install vayu-py
 Initialize the Vayu API client. The `base_url` parameter is optional and defaults to Vayu's public API servers.
 
 ```python
-from vayu_api_client import VayuClient
+from vayu_sdk import Vayu
 
-vayu = VayuClient(
+vayu = Vayu(
     access_token='your-access-token',
     base_url='https://connect.withvayu.com'  # Optional
 )
