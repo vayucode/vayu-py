@@ -19,8 +19,9 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, Optional
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from openapi.models.address import Address
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -29,8 +30,10 @@ class UpdateCustomerRequest(BaseModel):
     UpdateCustomerRequest
     """ # noqa: E501
     name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The name of the customer")
-    alias: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The alias of the customer used to match events to the customer.")
-    __properties: ClassVar[List[str]] = ["name", "alias"]
+    external_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The external ID of the customer", alias="externalId")
+    aliases: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = Field(default=None, description="The aliases of the customer used to match events to the customer.")
+    address: Optional[Address] = None
+    __properties: ClassVar[List[str]] = ["name", "externalId", "aliases", "address"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -71,6 +74,9 @@ class UpdateCustomerRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of address
+        if self.address:
+            _dict['address'] = self.address.to_dict()
         return _dict
 
     @classmethod
@@ -84,7 +90,9 @@ class UpdateCustomerRequest(BaseModel):
 
         _obj = cls.model_validate({
             "name": obj.get("name"),
-            "alias": obj.get("alias")
+            "externalId": obj.get("externalId"),
+            "aliases": obj.get("aliases"),
+            "address": Address.from_dict(obj["address"]) if obj.get("address") is not None else None
         })
         return _obj
 
