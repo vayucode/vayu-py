@@ -1,3 +1,4 @@
+from vayu_sdk.apis.api_webhooks import WebhooksAPI
 from .clients.vayu_client import VayuClient
 from .apis.api_contracts import ContractsAPI
 from .apis.api_customers import CustomersAPI
@@ -39,6 +40,10 @@ class Vayu:
     @property
     def plans(self) -> PlansAPI:
         return PlansAPI(self.__client)
+    
+    @property
+    def webhooks(self) -> WebhooksAPI:
+        return WebhooksAPI(self.__client)
     
     def login(self):
         self.__client = VayuClient(self.__api_key, self.__host)
