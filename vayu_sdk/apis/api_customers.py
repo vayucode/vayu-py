@@ -1,3 +1,4 @@
+from functools import singledispatch
 from openapi.api.customers_api import CustomersApi
 from vayu_sdk.clients.vayu_client import VayuClient
 from openapi.models.create_customer_request import CreateCustomerRequest
@@ -11,6 +12,7 @@ from openapi.models.get_customer_response import GetCustomerResponse
 from openapi.models.create_customer_response import CreateCustomerResponse
 from openapi.models.update_customer_response import UpdateCustomerResponse
 from openapi.models.delete_customer_response import DeleteCustomerResponse
+from openapi.models.address import Address
 
 
 Customer = CreateCustomerResponseCustomer
@@ -31,19 +33,18 @@ class CustomersAPI:
 
         return response
 
-    def create(self, name: str, alias: str):
-        request = CreateCustomerRequest(name=name, alias=alias)
-        response = self.__client.create_customer(
-            request
+    def create(
+        self, name: str, external_id: str, aliases: list = [], address: Address = None
+    ):
+        request = CreateCustomerRequest(
+            name=name, external_id=external_id, aliases=aliases, address=address
         )
-
+        response = self.__client.create_customer(request)
         return response
 
     def update(self, id: str, name: str = None, alias: str = None):
         request = UpdateCustomerRequest(name=name, alias=alias)
-        response = self.__client.update_customer(
-            id, request
-        )
+        response = self.__client.update_customer(id, request)
 
         return response
 
@@ -56,6 +57,7 @@ class CustomersAPI:
 __all__ = [
     "CustomersAPI",
     "Customer",
+    "Address",
     "ListCustomersResponse",
     "GetCustomerResponse",
     "CreateCustomerResponse",
