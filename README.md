@@ -134,6 +134,18 @@ response = vayu.customers.delete_customer('customer-id')
 print(response['customer'])
 ```
 
+### Contracts
+
+#### Assigning a contract to a customer
+
+In order to assign a contract to a customer you would need to provide the customer Id and the relevant plan
+
+```python
+response = vayu.contracts.create(time.time(), None, "1f4cf23x-2c4y-483z-1111-158621f77a21", "4f6cf35x-1234-483z-a0a9-158621f77a21")
+
+print(response['contract'])
+```
+
 ### Meters
 
 Meters are entities that track and aggregate usage data based on events. They are crucial for billing and monitoring purposes. Each meter is associated with a specific event name and has an aggregation method to sum up usage values.

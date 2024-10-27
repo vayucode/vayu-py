@@ -28,7 +28,7 @@ class ContractsAPI:
         return response
 
     def create(
-        self, start_date: datetime, end_date: datetime, customer_id: str, plan_id: str
+        self, start_date: datetime, end_date: datetime | None, customer_id: str, plan_id: str
     ):
         request = CreateContractRequest(
             start_date=start_date,
