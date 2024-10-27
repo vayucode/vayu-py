@@ -42,6 +42,7 @@ from openapi.exceptions import ApiAttributeError
 from openapi.exceptions import ApiException
 
 # import models into sdk package
+from openapi.models.address import Address
 from openapi.models.aggregation_method import AggregationMethod
 from openapi.models.aggregation_operator import AggregationOperator
 from openapi.models.billing_cycle_status import BillingCycleStatus

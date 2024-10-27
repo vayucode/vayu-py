@@ -21,7 +21,7 @@ from typing_extensions import Self
 
 class PaymentTerm(str, Enum):
     """
-    PaymentTerm
+    flag to indicate if the payment is postpayment or prepayment
     """
 
     """

@@ -305,6 +305,25 @@ components:
             $ref: "#/components/schemas/ListCreditLedgerEntriesResponse"
   parameters: {}
   schemas:
+    Address:
+      type: object
+      properties:
+        country:
+          type: string
+          minLength: 1
+        city:
+          type: string
+          minLength: 1
+        addressText:
+          type: string
+          minLength: 1
+        state:
+          type: string
+          minLength: 1
+        postalCode:
+          type: string
+          minLength: 1
+      description: The address of the customer
     CreateCustomerRequest:
       type: object
       properties:
@@ -312,10 +331,19 @@ components:
           type: string
           minLength: 1
           description: The name of the customer
-        alias:
+        externalId:
           type: string
           minLength: 1
-          description: The alias of the customer used to match events to the customer.
+          description: The external ID of the customer
+        aliases:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+          description: The aliases of the customer used to match events to the customer.
+        address:
+          $ref: "#/components/schemas/Address"
       required:
         - name
     CreateCustomerResponse:
@@ -328,10 +356,19 @@ components:
               type: string
               minLength: 1
               description: The name of the customer
-            alias:
+            externalId:
               type: string
               minLength: 1
-              description: The alias of the customer used to match events to the customer.
+              description: The external ID of the customer
+            aliases:
+              type: array
+              items:
+                type: string
+                minLength: 1
+              default: []
+              description: The aliases of the customer used to match events to the customer.
+            address:
+              $ref: "#/components/schemas/Address"
             id:
               type: string
             createdAt:
@@ -359,10 +396,19 @@ components:
                 type: string
                 minLength: 1
                 description: The name of the customer
-              alias:
+              externalId:
                 type: string
                 minLength: 1
-                description: The alias of the customer used to match events to the customer.
+                description: The external ID of the customer
+              aliases:
+                type: array
+                items:
+                  type: string
+                  minLength: 1
+                default: []
+                description: The aliases of the customer used to match events to the customer.
+              address:
+                $ref: "#/components/schemas/Address"
               id:
                 type: string
               createdAt:
@@ -396,10 +442,19 @@ components:
               type: string
               minLength: 1
               description: The name of the customer
-            alias:
+            externalId:
               type: string
               minLength: 1
-              description: The alias of the customer used to match events to the customer.
+              description: The external ID of the customer
+            aliases:
+              type: array
+              items:
+                type: string
+                minLength: 1
+              default: []
+              description: The aliases of the customer used to match events to the customer.
+            address:
+              $ref: "#/components/schemas/Address"
             id:
               type: string
             createdAt:
@@ -422,10 +477,19 @@ components:
           type: string
           minLength: 1
           description: The name of the customer
-        alias:
+        externalId:
           type: string
           minLength: 1
-          description: The alias of the customer used to match events to the customer.
+          description: The external ID of the customer
+        aliases:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+          description: The aliases of the customer used to match events to the customer.
+        address:
+          $ref: "#/components/schemas/Address"
       additionalProperties: false
     UpdateCustomerResponse:
       type: object
@@ -437,10 +501,19 @@ components:
               type: string
               minLength: 1
               description: The name of the customer
-            alias:
+            externalId:
               type: string
               minLength: 1
-              description: The alias of the customer used to match events to the customer.
+              description: The external ID of the customer
+            aliases:
+              type: array
+              items:
+                type: string
+                minLength: 1
+              default: []
+              description: The aliases of the customer used to match events to the customer.
+            address:
+              $ref: "#/components/schemas/Address"
             id:
               type: string
             createdAt:
@@ -466,10 +539,19 @@ components:
               type: string
               minLength: 1
               description: The name of the customer
-            alias:
+            externalId:
               type: string
               minLength: 1
-              description: The alias of the customer used to match events to the customer.
+              description: The external ID of the customer
+            aliases:
+              type: array
+              items:
+                type: string
+                minLength: 1
+              default: []
+              description: The aliases of the customer used to match events to the customer.
+            address:
+              $ref: "#/components/schemas/Address"
             id:
               type: string
             createdAt:
@@ -760,6 +842,7 @@ components:
         - Prepayment
         - Postpayment
       default: Postpayment
+      description: flag to indicate if the payment is postpayment or prepayment
     PlanBillingData:
       type: object
       properties:

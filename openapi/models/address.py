@@ -18,28 +18,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
-from openapi.models.address import Address
 from typing import Optional, Set
 from typing_extensions import Self
 
-class DeleteCustomerResponseCustomer(BaseModel):
+class Address(BaseModel):
     """
-    DeleteCustomerResponseCustomer
+    The address of the customer
     """ # noqa: E501
-    name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The name of the customer")
-    external_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The external ID of the customer", alias="externalId")
-    aliases: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = Field(default=None, description="The aliases of the customer used to match events to the customer.")
-    address: Optional[Address] = None
-    id: StrictStr
-    created_at: datetime = Field(alias="createdAt")
-    updated_at: datetime = Field(alias="updatedAt")
-    deleted_at: StrictStr = Field(alias="deletedAt")
+    country: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    city: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    address_text: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, alias="addressText")
+    state: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
+    postal_code: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, alias="postalCode")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["name", "externalId", "aliases", "address", "id", "createdAt", "updatedAt", "deletedAt"]
+    __properties: ClassVar[List[str]] = ["country", "city", "addressText", "state", "postalCode"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -59,7 +54,7 @@ class DeleteCustomerResponseCustomer(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of DeleteCustomerResponseCustomer from a JSON string"""
+        """Create an instance of Address from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -82,9 +77,6 @@ class DeleteCustomerResponseCustomer(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of address
-        if self.address:
-            _dict['address'] = self.address.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -94,7 +86,7 @@ class DeleteCustomerResponseCustomer(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of DeleteCustomerResponseCustomer from a dict"""
+        """Create an instance of Address from a dict"""
         if obj is None:
             return None
 
@@ -102,14 +94,11 @@ class DeleteCustomerResponseCustomer(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "name": obj.get("name"),
-            "externalId": obj.get("externalId"),
-            "aliases": obj.get("aliases"),
-            "address": Address.from_dict(obj["address"]) if obj.get("address") is not None else None,
-            "id": obj.get("id"),
-            "createdAt": obj.get("createdAt"),
-            "updatedAt": obj.get("updatedAt"),
-            "deletedAt": obj.get("deletedAt")
+            "country": obj.get("country"),
+            "city": obj.get("city"),
+            "addressText": obj.get("addressText"),
+            "state": obj.get("state"),
+            "postalCode": obj.get("postalCode")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():
