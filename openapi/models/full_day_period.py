@@ -24,7 +24,7 @@ from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Period(BaseModel):
+class FullDayPeriod(BaseModel):
     """
     The billing cycle of the invoice, consists of a start and end date
     """ # noqa: E501
@@ -51,7 +51,7 @@ class Period(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Period from a JSON string"""
+        """Create an instance of FullDayPeriod from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -83,7 +83,7 @@ class Period(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Period from a dict"""
+        """Create an instance of FullDayPeriod from a dict"""
         if obj is None:
             return None
 

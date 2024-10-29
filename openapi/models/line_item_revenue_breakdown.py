@@ -18,24 +18,24 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
+from typing import Any, ClassVar, Dict, List, Union
 from typing_extensions import Annotated
-from openapi.models.address import Address
-from openapi.models.contact import Contact
 from typing import Optional, Set
 from typing_extensions import Self
 
-class UpdateCustomerRequest(BaseModel):
+class LineItemRevenueBreakdown(BaseModel):
     """
-    UpdateCustomerRequest
+    The revenue breakdown of the line item
     """ # noqa: E501
-    name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The name of the customer")
-    external_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The external ID of the customer", alias="externalId")
-    aliases: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = Field(default=None, description="The aliases of the customer used to match events to the customer.")
-    address: Optional[Address] = None
-    contacts: Optional[List[Contact]] = Field(default=None, description="The contacts of the customer. Contact marked as primary is the target for invoice sharing.")
-    __properties: ClassVar[List[str]] = ["name", "externalId", "aliases", "address", "contacts"]
+    total: Union[StrictFloat, StrictInt]
+    subtotal: Union[StrictFloat, StrictInt]
+    overage: Union[StrictFloat, StrictInt]
+    discount: Union[StrictFloat, StrictInt]
+    credits_used: Union[StrictFloat, StrictInt] = Field(alias="creditsUsed")
+    tax: Union[Annotated[float, Field(strict=True, ge=0)], Annotated[int, Field(strict=True, ge=0)]]
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["total", "subtotal", "overage", "discount", "creditsUsed", "tax"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -55,7 +55,7 @@ class UpdateCustomerRequest(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of UpdateCustomerRequest from a JSON string"""
+        """Create an instance of LineItemRevenueBreakdown from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -67,8 +67,10 @@ class UpdateCustomerRequest(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -76,21 +78,16 @@ class UpdateCustomerRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of address
-        if self.address:
-            _dict['address'] = self.address.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in contacts (list)
-        _items = []
-        if self.contacts:
-            for _item_contacts in self.contacts:
-                if _item_contacts:
-                    _items.append(_item_contacts.to_dict())
-            _dict['contacts'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of UpdateCustomerRequest from a dict"""
+        """Create an instance of LineItemRevenueBreakdown from a dict"""
         if obj is None:
             return None
 
@@ -98,12 +95,18 @@ class UpdateCustomerRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "name": obj.get("name"),
-            "externalId": obj.get("externalId"),
-            "aliases": obj.get("aliases"),
-            "address": Address.from_dict(obj["address"]) if obj.get("address") is not None else None,
-            "contacts": [Contact.from_dict(_item) for _item in obj["contacts"]] if obj.get("contacts") is not None else None
+            "total": obj.get("total"),
+            "subtotal": obj.get("subtotal"),
+            "overage": obj.get("overage"),
+            "discount": obj.get("discount"),
+            "creditsUsed": obj.get("creditsUsed"),
+            "tax": obj.get("tax")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

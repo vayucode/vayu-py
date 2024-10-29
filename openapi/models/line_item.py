@@ -18,9 +18,10 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, field_validator
-from typing import Any, ClassVar, Dict, List, Union
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
+from openapi.models.line_item_revenue_breakdown import LineItemRevenueBreakdown
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -29,9 +30,9 @@ class LineItem(BaseModel):
     LineItem
     """ # noqa: E501
     invoice_id: Annotated[str, Field(strict=True)] = Field(description="The id of the invoice that the line item is a part of", alias="invoiceId")
-    price: Union[StrictFloat, StrictInt] = Field(description="The price of the line item")
+    revenue_breakdown: LineItemRevenueBreakdown = Field(alias="revenueBreakdown")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["invoiceId", "price"]
+    __properties: ClassVar[List[str]] = ["invoiceId", "revenueBreakdown"]
 
     @field_validator('invoice_id')
     def invoice_id_validate_regular_expression(cls, value):
@@ -81,6 +82,9 @@ class LineItem(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of revenue_breakdown
+        if self.revenue_breakdown:
+            _dict['revenueBreakdown'] = self.revenue_breakdown.to_dict()
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -99,7 +103,7 @@ class LineItem(BaseModel):
 
         _obj = cls.model_validate({
             "invoiceId": obj.get("invoiceId"),
-            "price": obj.get("price")
+            "revenueBreakdown": LineItemRevenueBreakdown.from_dict(obj["revenueBreakdown"]) if obj.get("revenueBreakdown") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

@@ -17,8 +17,8 @@ class InvoicesAPI:
     def list(self, limit: int = None, cursor: int = None):
         return self.__client.list_invoices(limit=limit, cursor=cursor)
 
-    def get(self, invoice_id: str):
-        get_invoice_response = self.__client.get_invoice(invoice_id)
+    def get(self, id: str):
+        get_invoice_response = self.__client.get_invoice(invoice_id=id)
 
         return get_invoice_response
 

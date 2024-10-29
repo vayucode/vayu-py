@@ -10,9 +10,9 @@ class WebhooksAPI:
         vayu_client.validate_logged_in()
         self.__client = WebhooksApi(vayu_client.client)
 
-    def subscribe(self, callback_url: str, event_type: NotificationEventType, ):
+    def subscribe(self, callback_url: str, event_type: NotificationEventType):
         request = WebhookSubscribeRequest(callback_url=callback_url, event_type=event_type)
-        return self.__client.webhook_subscribe(request)
+        return self.__client.webhook_subscribe(webhook_subscribe_request=request)
 
 
 __all__ = [

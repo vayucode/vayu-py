@@ -20,12 +20,12 @@ class EventsAPI:
         self.__client = EventsApi(vayu_client.client)
 
     def get(self, ref: str):
-        response = self.__client.get_event_by_ref_id(ref)
+        response = self.__client.get_event_by_ref_id(ref_id=ref)
 
         return response
 
     def delete(self, ref: str):
-        response = self.__client.delete_event_by_ref_id(ref)
+        response = self.__client.delete_event_by_ref_id(ref_id=ref)
 
         return response
 
@@ -48,14 +48,14 @@ class EventsAPI:
         return response
 
     def send(self, events: List[Event]):
-        payload = SendEventsRequest(events)
+        request = SendEventsRequest(events)
 
-        return self.__client.send_events(payload)
+        return self.__client.send_events(send_events_request=request)
 
     def dry_run(self, events: List[Event]):
-        payload = SendEventsRequest(events)
+        request = SendEventsRequest(events)
 
-        return self.__client.send_events_dry_run(payload)
+        return self.__client.send_events_dry_run(events_dry_run_request=request)
 
 
 __all__ = [

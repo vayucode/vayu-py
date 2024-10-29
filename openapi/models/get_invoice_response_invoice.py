@@ -22,8 +22,8 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
+from openapi.models.full_day_period import FullDayPeriod
 from openapi.models.line_item import LineItem
-from openapi.models.period import Period
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -34,7 +34,7 @@ class GetInvoiceResponseInvoice(BaseModel):
     customer_id: Annotated[str, Field(strict=True)] = Field(description="The id of the customer that the invoice is associated with", alias="customerId")
     contract_id: Optional[Annotated[str, Field(strict=True)]] = Field(default=None, description="The id of the contract that the invoice is associated with", alias="contractId")
     name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The name of the invoice, usually a description of the billing period")
-    billing_cycle: Period = Field(alias="billingCycle")
+    billing_cycle: FullDayPeriod = Field(alias="billingCycle")
     line_items: List[LineItem] = Field(alias="lineItems")
     amount: Union[StrictFloat, StrictInt] = Field(description="The total amount of the invoice")
     id: StrictStr
@@ -131,7 +131,7 @@ class GetInvoiceResponseInvoice(BaseModel):
             "customerId": obj.get("customerId"),
             "contractId": obj.get("contractId"),
             "name": obj.get("name"),
-            "billingCycle": Period.from_dict(obj["billingCycle"]) if obj.get("billingCycle") is not None else None,
+            "billingCycle": FullDayPeriod.from_dict(obj["billingCycle"]) if obj.get("billingCycle") is not None else None,
             "lineItems": [LineItem.from_dict(_item) for _item in obj["lineItems"]] if obj.get("lineItems") is not None else None,
             "amount": obj.get("amount"),
             "id": obj.get("id"),

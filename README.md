@@ -43,19 +43,19 @@ To send a batch of events for processing and storage:
 
 ```python
 events = [
-    {
-        'name': 'api_call',  # The distinctive label assigned to an event
-        'timestamp': '2023-09-13T18:25:43.511Z',  # The exact moment of event occurrence in ISO 8601 format
-        'customer_alias': 'customer_12345',  # A unique identifier assigned to each customer
-        'ref': '4f6cf35x-2c4y-483z-a0a9-158621f77a21',  # A universally unique identifier for each event
-        'data': {
-            'key1': 'processing_duration',  # Example additional data
-            'key2': 'api_url'  # Example additional data
+    Event(
+      name='api_call',
+      ref='4f6cf35x-2c4y-483z-a0a9-158621f77a21',
+      timestamp=datetime.strptime('2023-09-13T18:25:43.511Z', '%Y-%m-%dT%H:%M:%S.%fZ'),
+      customerAlias='customer_12345',
+      data= {
+            'key1': 'processing_duration',
+            'key2': 'api_url'
         }
-    }
+    )
 ]
 
-response = vayu.events.send_events({'events': events})
+response = vayu.events.send(events=events)
 
 print(response['valid_events'])
 print(response['invalid_events'])
@@ -66,12 +66,12 @@ print(response['invalid_events'])
 To fetch events occurring within a specified timestamp range:
 
 ```python
-response = vayu.events.query_events({
-    'start_time': '2023-09-01T00:00:00.000Z',
-    'end_time': '2023-09-30T23:59:59.999Z',
-    'event_name': 'api_call',
-    'limit': 10
-})
+response = vayu.events.query(
+  start_time=datetime.strptime('2023-09-01T00:00:00.000Z', '%Y-%m-%dT%H:%M:%S.%fZ'),
+  end_time=datetime.strptime('2023-09-30T23:59:59.999Z', '%Y-%m-%dT%H:%M:%S.%fZ'),
+  event_name='api_call',
+  limit=10
+)
 
 print(response['events'])
 ```
@@ -81,7 +81,7 @@ print(response['events'])
 To get a specific event using its reference ID:
 
 ```python
-response = vayu.events.get_event_by_ref_id('4f6cf35x-2c4y-483z-a0a9-158621f77a21')
+response = vayu.events.get(ref='4f6cf35x-2c4y-483z-a0a9-158621f77a21')
 
 print(response['event'])
 ```
@@ -91,7 +91,7 @@ print(response['event'])
 To delete a specific event using its reference ID:
 
 ```python
-response = vayu.events.delete_event_by_ref_id('4f6cf35x-2c4y-483z-a0a9-158621f77a21')
+response = vayu.events.delete(ref='4f6cf35x-2c4y-483z-a0a9-158621f77a21')
 
 print(response['event'])
 ```
@@ -103,10 +103,10 @@ print(response['event'])
 To create a new customer:
 
 ```python
-response = vayu.customers.create_customer({
-    'name': 'John Doe',
-    'alias': 'customer_12345'
-})
+response = vayu.customers.create(
+  name='John Doe',
+  external_id='customer_12345'
+)
 
 print(response['customer'])
 ```
@@ -116,10 +116,10 @@ print(response['customer'])
 To update an existing customer by ID:
 
 ```python
-response = vayu.customers.update_customer('customer-id', {
-    'name': 'Jane Doe',
-    'alias': 'customer_67890'
-})
+response = vayu.customers.update(
+  id='customer-id',
+  external_id='customer_67890'
+)
 
 print(response['customer'])
 ```
@@ -129,7 +129,7 @@ print(response['customer'])
 To delete a customer by ID:
 
 ```python
-response = vayu.customers.delete_customer('customer-id')
+response = vayu.customers.delete(id='customer-id')
 
 print(response['customer'])
 ```
@@ -141,7 +141,12 @@ print(response['customer'])
 In order to assign a contract to a customer you would need to provide the customer Id and the relevant plan
 
 ```python
-response = vayu.contracts.create(time.time(), None, "1f4cf23x-2c4y-483z-1111-158621f77a21", "4f6cf35x-1234-483z-a0a9-158621f77a21")
+response = vayu.contracts.create(
+  start_date=time.time(), 
+  end_date=None, 
+  customer_id='1f4cf23x-2c4y-483z-1111-158621f77a21', 
+  plan_id='4f6cf35x-1234-483z-a0a9-158621f77a21'
+)
 
 print(response['contract'])
 ```
@@ -155,7 +160,7 @@ Meters are entities that track and aggregate usage data based on events. They ar
 To get a meter by ID:
 
 ```python
-response = vayu.meters.get_meter('meter-id')
+response = vayu.meters.get(id='meter-id')
 
 print(response['meter'])
 ```
@@ -165,27 +170,26 @@ print(response['meter'])
 To update a meter by ID:
 
 ```python
-response = vayu.meters.update_meter('meter-id', {
-    'name': 'Updated Meter Name',
-    'event_name': 'api_call',
-    'aggregation_method': {
-        'operator': 'Sum',
-        'field': 'usage',
-    },
-    'filter': {
-        'conditions': [
-            {
-                'criterions': [
-                    {
-                        'field': 'event',
-                        'operator': 'Equals',
-                        'value': 'api_call'
-                    }
-                ]
-            }
-        ]
-    }
-})
+response = vayu.meters.update(
+  id='meter-id',
+  name='Updated Meter Name',
+  event_name='api_call',
+  aggregation_method= AggregationMethod(
+    field='usage',
+    operator=AggregationOperator.SUM
+  ),
+  filter=Filter(
+    conditions=[
+      Condition(criterions=[
+        Criterion(
+          field='event',
+          operator=CriterionOperator.EQUALS,
+          value='api_call'
+        )
+      ])
+    ]
+  )
+)
 
 print(response['meter'])
 ```
@@ -195,7 +199,7 @@ print(response['meter'])
 To delete a meter by ID:
 
 ```python
-response = vayu.meters.delete_meter('meter-id')
+response = vayu.meters.delete(id='meter-id')
 
 print(response['meter'])
 ```
@@ -207,34 +211,34 @@ The Vayu API client library provides access to the following features:
 - **Auth**
   - `login()`
 - **Events**
-  - `events.send_events()`
-  - `events.query_events()`
-  - `events.get_event_by_ref_id()`
-  - `events.delete_event_by_ref_id()`
-  - `events.send_events_dry_run()`
+  - `events.get()`
+  - `events.delete()`
+  - `events.query()`
+  - `events.send()`
+  - `events.dry_run()`
 - **Customers**
-  - `customers.create_customer()`
-  - `customers.update_customer()`
-  - `customers.delete_customer()`
-  - `customers.list_customers()`
-  - `customers.get_customer()`
+  - `customers.list()`
+  - `customers.get()`
+  - `customers.create()`
+  - `customers.update()`
+  - `customers.delete()`
 - **Meters**
-  - `meters.get_meter()`
-  - `meters.update_meter()`
-  - `meters.delete_meter()`
-  - `meters.list_meters()`
+  - `meters.get()`
+  - `meters.update()`
+  - `meters.delete()`
+  - `meters.list()`
 - **Plans**
-  - `plans.get_plan()`
-  - `plans.delete_plan()`
-  - `plans.list_plans()`
+  - `plans.list()`
+  - `plans.get()`
+  - `plans.delete()`
 - **Contracts**
-  - `contracts.create_contract()`
-  - `contracts.delete_contract()`
-  - `contracts.list_contracts()`
-  - `contracts.get_contract()`
+  - `contracts.list()`
+  - `contracts.get()`
+  - `contracts.create()`
+  - `contracts.delete()`
 - **Invoices**
-  - `invoices.get_invoice()`
-  - `invoices.list_invoices()`
+  - `invoices.list()`
+  - `invoices.get()`
 
 ## Support
 

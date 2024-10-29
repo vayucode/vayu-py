@@ -18,13 +18,13 @@ class PlansAPI:
     def list(self, limit: int = None, cursor: int = None):
         return self.__client.list_plans(limit=limit, cursor=cursor)
 
-    def get(self, plan_id: str):
-        get_plans_response = self.__client.get_plan(plan_id)
+    def get(self, id: str):
+        get_plans_response = self.__client.get_plan(plan_id=id)
 
         return get_plans_response
 
     def delete(self, id: str):
-        delete_plan_response = self.__client.delete_plan(id)
+        delete_plan_response = self.__client.delete_plan(plan_id=id)
 
         return delete_plan_response
 

@@ -22,8 +22,8 @@ class ContractsAPI:
     def list(self, limit: int = None, cursor: int = None):
         return self.__client.list_contracts(limit=limit, cursor=cursor)
 
-    def get(self, contract_id: str):
-        response = self.__client.get_contract(contract_id)
+    def get(self, id: str):
+        response = self.__client.get_contract(contract_id=id)
 
         return response
 
@@ -31,20 +31,20 @@ class ContractsAPI:
         self, start_date: datetime, end_date: datetime | None, customer_id: str, plan_id: str
     ):
         request = CreateContractRequest(
-            start_date=start_date,
-            end_date=end_date,
-            customer_id=customer_id,
-            plan_id=plan_id,
+            startDate=start_date,
+            endDate=end_date,
+            customerId=customer_id,
+            planId=plan_id,
         )
 
         response = self.__client.create_contract(
-            request
+            create_contract_request=request
         )
 
         return response
 
     def delete(self, id: str):
-        response = self.__client.delete_contract(id)
+        response = self.__client.delete_contract(contract_id=id)
 
         return response
 
