@@ -3,7 +3,13 @@ name: Publish Python Package
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "*"
+
+  workflow_dispatch:
+
+concurrency:
+  group: "publish"
+  cancel-in-progress: false
 
 jobs:
   build:
