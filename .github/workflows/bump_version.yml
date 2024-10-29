@@ -37,13 +37,15 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Action"
+          git config --global user.email "github-action@users.noreply.github.com"
 
       - name: Bump version
         run: |
           bump2version ${{ github.event.inputs.version_type }}
 
       - name: Push version bump to repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           git push --follow-tags
