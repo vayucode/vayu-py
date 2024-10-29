@@ -31,10 +31,10 @@ class ContractsAPI:
         self, start_date: datetime, end_date: datetime | None, customer_id: str, plan_id: str
     ):
         request = CreateContractRequest(
-            start_date=start_date,
-            end_date=end_date,
-            customer_id=customer_id,
-            plan_id=plan_id,
+            startDate=start_date,
+            endDate=end_date,
+            customerId=customer_id,
+            planId=plan_id,
         )
 
         response = self.__client.create_contract(
