@@ -21,6 +21,7 @@ from openapi.models.aggregation_operator import AggregationOperator
 from openapi.models.billing_cycle_status import BillingCycleStatus
 from openapi.models.billing_interval import BillingInterval
 from openapi.models.condition import Condition
+from openapi.models.contact import Contact
 from openapi.models.contract_status import ContractStatus
 from openapi.models.create_contract_request import CreateContractRequest
 from openapi.models.create_contract_response import CreateContractResponse
@@ -49,6 +50,7 @@ from openapi.models.events_dry_run_response_object import EventsDryRunResponseOb
 from openapi.models.events_dry_run_response_object_event import EventsDryRunResponseObjectEvent
 from openapi.models.events_dry_run_response_object_meter_with_values_inner import EventsDryRunResponseObjectMeterWithValuesInner
 from openapi.models.filter import Filter
+from openapi.models.full_day_period import FullDayPeriod
 from openapi.models.get_commitment_report_response import GetCommitmentReportResponse
 from openapi.models.get_contract_response import GetContractResponse
 from openapi.models.get_contract_response_contract import GetContractResponseContract
@@ -65,6 +67,7 @@ from openapi.models.get_products_usage_report_response import GetProductsUsageRe
 from openapi.models.grant_credits_request import GrantCreditsRequest
 from openapi.models.invalid_event import InvalidEvent
 from openapi.models.line_item import LineItem
+from openapi.models.line_item_revenue_breakdown import LineItemRevenueBreakdown
 from openapi.models.list_contracts_response import ListContractsResponse
 from openapi.models.list_credit_ledger_entries_response import ListCreditLedgerEntriesResponse
 from openapi.models.list_customers_response import ListCustomersResponse
@@ -83,7 +86,6 @@ from openapi.models.net_suite_sync_invoices_request_data_item_items_inner import
 from openapi.models.net_suite_sync_invoices_response import NetSuiteSyncInvoicesResponse
 from openapi.models.notification_event_type import NotificationEventType
 from openapi.models.payment_term import PaymentTerm
-from openapi.models.period import Period
 from openapi.models.plan_billing_data import PlanBillingData
 from openapi.models.plan_status import PlanStatus
 from openapi.models.query_events_response import QueryEventsResponse
