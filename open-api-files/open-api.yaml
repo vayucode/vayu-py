@@ -324,6 +324,19 @@ components:
           type: string
           minLength: 1
       description: The address of the customer
+    Contact:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          format: email
+        isPrimary:
+          type: boolean
+      required:
+        - email
     CreateCustomerRequest:
       type: object
       properties:
@@ -344,6 +357,13 @@ components:
           description: The aliases of the customer used to match events to the customer.
         address:
           $ref: "#/components/schemas/Address"
+        contacts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Contact"
+          default: []
+          description: The contacts of the customer. Contact marked as primary is the
+            target for invoice sharing.
       required:
         - name
     CreateCustomerResponse:
@@ -369,6 +389,13 @@ components:
               description: The aliases of the customer used to match events to the customer.
             address:
               $ref: "#/components/schemas/Address"
+            contacts:
+              type: array
+              items:
+                $ref: "#/components/schemas/Contact"
+              default: []
+              description: The contacts of the customer. Contact marked as primary is the
+                target for invoice sharing.
             id:
               type: string
             createdAt:
@@ -409,6 +436,13 @@ components:
                 description: The aliases of the customer used to match events to the customer.
               address:
                 $ref: "#/components/schemas/Address"
+              contacts:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Contact"
+                default: []
+                description: The contacts of the customer. Contact marked as primary is the
+                  target for invoice sharing.
               id:
                 type: string
               createdAt:
@@ -455,6 +489,13 @@ components:
               description: The aliases of the customer used to match events to the customer.
             address:
               $ref: "#/components/schemas/Address"
+            contacts:
+              type: array
+              items:
+                $ref: "#/components/schemas/Contact"
+              default: []
+              description: The contacts of the customer. Contact marked as primary is the
+                target for invoice sharing.
             id:
               type: string
             createdAt:
@@ -490,6 +531,13 @@ components:
           description: The aliases of the customer used to match events to the customer.
         address:
           $ref: "#/components/schemas/Address"
+        contacts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Contact"
+          default: []
+          description: The contacts of the customer. Contact marked as primary is the
+            target for invoice sharing.
       additionalProperties: false
     UpdateCustomerResponse:
       type: object
@@ -514,6 +562,13 @@ components:
               description: The aliases of the customer used to match events to the customer.
             address:
               $ref: "#/components/schemas/Address"
+            contacts:
+              type: array
+              items:
+                $ref: "#/components/schemas/Contact"
+              default: []
+              description: The contacts of the customer. Contact marked as primary is the
+                target for invoice sharing.
             id:
               type: string
             createdAt:
@@ -552,6 +607,13 @@ components:
               description: The aliases of the customer used to match events to the customer.
             address:
               $ref: "#/components/schemas/Address"
+            contacts:
+              type: array
+              items:
+                $ref: "#/components/schemas/Contact"
+              default: []
+              description: The contacts of the customer. Contact marked as primary is the
+                target for invoice sharing.
             id:
               type: string
             createdAt:
@@ -1167,7 +1229,7 @@ components:
             - updatedAt
       required:
         - contract
-    Period:
+    FullDayPeriod:
       type: object
       properties:
         startTime:
@@ -1187,12 +1249,33 @@ components:
           type: string
           pattern: ^[0-9a-fA-F]{24}$
           description: The id of the invoice that the line item is a part of
-        price:
-          type: number
-          description: The price of the line item
+        revenueBreakdown:
+          type: object
+          properties:
+            total:
+              type: number
+            subtotal:
+              type: number
+            overage:
+              type: number
+            discount:
+              type: number
+            creditsUsed:
+              type: number
+            tax:
+              type: number
+              minimum: 0
+          required:
+            - total
+            - subtotal
+            - overage
+            - discount
+            - creditsUsed
+            - tax
+          description: The revenue breakdown of the line item
       required:
         - invoiceId
-        - price
+        - revenueBreakdown
     GetInvoiceResponse:
       type: object
       properties:
@@ -1213,7 +1296,7 @@ components:
               description: The name of the invoice, usually a description of the billing
                 period
             billingCycle:
-              $ref: "#/components/schemas/Period"
+              $ref: "#/components/schemas/FullDayPeriod"
             lineItems:
               type: array
               items:
@@ -1262,7 +1345,7 @@ components:
                 description: The name of the invoice, usually a description of the billing
                   period
               billingCycle:
-                $ref: "#/components/schemas/Period"
+                $ref: "#/components/schemas/FullDayPeriod"
               lineItems:
                 type: array
                 items:
