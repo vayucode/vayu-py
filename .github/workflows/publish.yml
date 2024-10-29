@@ -29,11 +29,14 @@ jobs:
           pip install -r requirements.txt
           pip install build twine
 
+      - name: Verify installed packages
+        run: pip list
+
       - name: Clear dist folder
         run: rm -rf dist
 
       - name: Build the package
-        run: python -m build
+        run: python setup.py sdist bdist_wheel
 
       - name: Publish to PyPI
         env:
