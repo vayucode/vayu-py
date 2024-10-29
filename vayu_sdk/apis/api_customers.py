@@ -30,8 +30,8 @@ class CustomersAPI:
     def list(self, cursor: str = None, limit: int = None):
         return self.__client.list_customers(limit=limit, cursor=cursor)
 
-    def get(self, customer_id: str):
-        response = self.__client.get_customer(customer_id)
+    def get(self, id: str):
+        response = self.__client.get_customer(customer_id=id)
 
         return response
 
@@ -41,17 +41,17 @@ class CustomersAPI:
         request = CreateCustomerRequest(
             name=name, externalId=external_id, aliases=aliases, address=address, contacts=contacts
         )
-        response = self.__client.create_customer(request)
+        response = self.__client.create_customer(create_customer_request=request)
         return response
 
     def update(self, id: str, name: str = None, external_id: str = None, aliases: List[str] = None, address: Address = None, contacts: List[Contact] = None):
         request = UpdateCustomerRequest(name=name, externalId=external_id, address=address, contacts=contacts, aliases=aliases)
-        response = self.__client.update_customer(id, request)
+        response = self.__client.update_customer(customer_id=id, update_customer_request=request)
 
         return response
 
     def delete(self, id: str):
-        response = self.__client.delete_customer(id)
+        response = self.__client.delete_customer(customer_id=id)
 
         return response
 

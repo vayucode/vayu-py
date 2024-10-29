@@ -43,19 +43,19 @@ To send a batch of events for processing and storage:
 
 ```python
 events = [
-    {
-        'name': 'api_call',  # The distinctive label assigned to an event
-        'timestamp': '2023-09-13T18:25:43.511Z',  # The exact moment of event occurrence in ISO 8601 format
-        'customer_alias': 'customer_12345',  # A unique identifier assigned to each customer
-        'ref': '4f6cf35x-2c4y-483z-a0a9-158621f77a21',  # A universally unique identifier for each event
-        'data': {
-            'key1': 'processing_duration',  # Example additional data
-            'key2': 'api_url'  # Example additional data
+    Event(
+      name='api_call',
+      ref='4f6cf35x-2c4y-483z-a0a9-158621f77a21',
+      timestamp=datetime.strptime('2023-09-13T18:25:43.511Z', '%Y-%m-%dT%H:%M:%S.%fZ'),
+      customerAlias='customer_12345',
+      data= {
+            'key1': 'processing_duration',
+            'key2': 'api_url'
         }
-    }
+    )
 ]
 
-response = vayu.events.send({'events': events})
+response = vayu.events.send(events=events)
 
 print(response['valid_events'])
 print(response['invalid_events'])
@@ -211,34 +211,34 @@ The Vayu API client library provides access to the following features:
 - **Auth**
   - `login()`
 - **Events**
-  - `events.send_events()`
-  - `events.query_events()`
-  - `events.get_event_by_ref_id()`
-  - `events.delete_event_by_ref_id()`
-  - `events.send_events_dry_run()`
+  - `events.get()`
+  - `events.delete()`
+  - `events.query()`
+  - `events.send()`
+  - `events.dry_run()`
 - **Customers**
-  - `customers.create_customer()`
-  - `customers.update_customer()`
-  - `customers.delete_customer()`
-  - `customers.list_customers()`
-  - `customers.get_customer()`
+  - `customers.list()`
+  - `customers.get()`
+  - `customers.create()`
+  - `customers.update()`
+  - `customers.delete()`
 - **Meters**
-  - `meters.get_meter()`
-  - `meters.update_meter()`
-  - `meters.delete_meter()`
-  - `meters.list_meters()`
+  - `meters.get()`
+  - `meters.update()`
+  - `meters.delete()`
+  - `meters.list()`
 - **Plans**
-  - `plans.get_plan()`
-  - `plans.delete_plan()`
-  - `plans.list_plans()`
+  - `plans.list()`
+  - `plans.get()`
+  - `plans.delete()`
 - **Contracts**
-  - `contracts.create_contract()`
-  - `contracts.delete_contract()`
-  - `contracts.list_contracts()`
-  - `contracts.get_contract()`
+  - `contracts.list()`
+  - `contracts.get()`
+  - `contracts.create()`
+  - `contracts.delete()`
 - **Invoices**
-  - `invoices.get_invoice()`
-  - `invoices.list_invoices()`
+  - `invoices.list()`
+  - `invoices.get()`
 
 ## Support
 
