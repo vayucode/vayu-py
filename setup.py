@@ -15,7 +15,7 @@ setup(
     packages=find_packages(),
     install_requires=read_requirements(),    
     description="The Vayu API client library in Python",
-    author="Fadi Atamny",
-    author_email="fadi@withvayu.com",
+    author="Vayu Team",
+    author_email="team@withvayu.com",
     url="https://github.com/weft-finance/vayu-py",
 )

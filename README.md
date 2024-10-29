@@ -22,8 +22,8 @@ Initialize the Vayu API client. The `base_url` parameter is optional and default
 from vayu_sdk import Vayu
 
 vayu = Vayu(
-    access_token='your-access-token',
-    base_url='https://connect.withvayu.com'  # Optional
+    api_key='your-api-token',
+    host='https://connect.withvayu.com'  # Optional
 )
 ```
 
@@ -48,7 +48,7 @@ events = [
       ref='4f6cf35x-2c4y-483z-a0a9-158621f77a21',
       timestamp=datetime.strptime('2023-09-13T18:25:43.511Z', '%Y-%m-%dT%H:%M:%S.%fZ'),
       customerAlias='customer_12345',
-      data= {
+      data={
             'key1': 'processing_duration',
             'key2': 'api_url'
         }

@@ -4,36 +4,46 @@ on:
   workflow_dispatch:
     inputs:
       version_type:
-        description: 'The type of version bump: patch, minor, or major'
+        description: "The type of version bump: patch, minor, or major"
         required: true
-        default: 'patch'
+        default: "patch"
         type: choice
         options:
           - patch
           - minor
           - major
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
 
 jobs:
   bump_version:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Check out the repository
-      uses: actions/checkout@v3
+      - name: Check out the repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Bump version
-      run: bump2version ${{ github.event.inputs.version_type }}
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-    - name: Push version bump to repository
-      run: |
-        git push --follow-tags
+      - name: Bump version
+        run: |
+          bump2version ${{ github.event.inputs.version_type }}
+
+      - name: Push version bump to repository
+        run: |
+          git push --follow-tags
