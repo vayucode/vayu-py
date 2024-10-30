@@ -13,8 +13,3 @@ class WebhooksAPI:
     def subscribe(self, callback_url: str, event_type: NotificationEventType):
         request = WebhookSubscribeRequest(callback_url=callback_url, event_type=event_type)
         return self.__client.webhook_subscribe(webhook_subscribe_request=request)
-
-
-__all__ = [
-    "WebhooksAPI",
-]

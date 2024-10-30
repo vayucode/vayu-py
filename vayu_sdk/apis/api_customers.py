@@ -59,15 +59,3 @@ class CustomersAPI:
         response = self.__client.delete_customer(customer_id=id)
 
         return response
-
-
-__all__ = [
-    "CustomersAPI",
-    "Customer",
-    "Address",
-    "ListCustomersResponse",
-    "GetCustomerResponse",
-    "CreateCustomerResponse",
-    "UpdateCustomerResponse",
-    "DeleteCustomerResponse",
-]

@@ -47,13 +47,3 @@ class ContractsAPI:
         response = self.__client.delete_contract(contract_id=id)
 
         return response
-
-
-__all__ = [
-    "ContractsAPI",
-    "Contract",
-    "ListContractsResponse",
-    "GetContractResponse",
-    "CreateContractResponse",
-    "DeleteContractResponse",
-]

@@ -57,13 +57,3 @@ class EventsAPI:
 
         return self.__client.send_events_dry_run(events_dry_run_request=request)
 
-
-__all__ = [
-    "EventsAPI",
-    "Event",
-    "GetEventResponse",
-    "DeleteEventResponse",
-    "QueryEventsResponse",
-    "SendEventsResponse",
-    "EventsDryRunResponse",
-]
