@@ -32,15 +32,15 @@ class CreateCustomerResponseCustomer(BaseModel):
     CreateCustomerResponseCustomer
     """ # noqa: E501
     name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The name of the customer")
-    external_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The external ID of the customer", alias="externalId")
     aliases: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = Field(default=None, description="The aliases of the customer used to match events to the customer.")
     address: Optional[Address] = None
     contacts: Optional[List[Contact]] = Field(default=None, description="The contacts of the customer. Contact marked as primary is the target for invoice sharing.")
+    external_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The external ID of the customer", alias="externalId")
     id: StrictStr
     created_at: datetime = Field(alias="createdAt")
     updated_at: datetime = Field(alias="updatedAt")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["name", "externalId", "aliases", "address", "contacts", "id", "createdAt", "updatedAt"]
+    __properties: ClassVar[List[str]] = ["name", "aliases", "address", "contacts", "externalId", "id", "createdAt", "updatedAt"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,6 +98,11 @@ class CreateCustomerResponseCustomer(BaseModel):
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
 
+        # set to None if aliases (nullable) is None
+        # and model_fields_set contains the field
+        if self.aliases is None and "aliases" in self.model_fields_set:
+            _dict['aliases'] = None
+
         return _dict
 
     @classmethod
@@ -111,10 +116,10 @@ class CreateCustomerResponseCustomer(BaseModel):
 
         _obj = cls.model_validate({
             "name": obj.get("name"),
-            "externalId": obj.get("externalId"),
             "aliases": obj.get("aliases"),
             "address": Address.from_dict(obj["address"]) if obj.get("address") is not None else None,
             "contacts": [Contact.from_dict(_item) for _item in obj["contacts"]] if obj.get("contacts") is not None else None,
+            "externalId": obj.get("externalId"),
             "id": obj.get("id"),
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt")

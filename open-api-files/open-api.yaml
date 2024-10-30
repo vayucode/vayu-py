@@ -146,7 +146,7 @@ components:
           schema:
             $ref: "#/components/schemas/ListCustomersResponse"
     GetCustomerResponse:
-      description: RequestSuccess
+      description: response contains the customer matching the provided externalId
       content:
         application/json:
           schema:
@@ -344,12 +344,9 @@ components:
           type: string
           minLength: 1
           description: The name of the customer
-        externalId:
-          type: string
-          minLength: 1
-          description: The external ID of the customer
         aliases:
           type: array
+          nullable: true
           items:
             type: string
             minLength: 1
@@ -361,9 +358,12 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Contact"
-          default: []
           description: The contacts of the customer. Contact marked as primary is the
             target for invoice sharing.
+        externalId:
+          type: string
+          minLength: 1
+          description: The external ID of the customer
       required:
         - name
     CreateCustomerResponse:
@@ -376,12 +376,9 @@ components:
               type: string
               minLength: 1
               description: The name of the customer
-            externalId:
-              type: string
-              minLength: 1
-              description: The external ID of the customer
             aliases:
               type: array
+              nullable: true
               items:
                 type: string
                 minLength: 1
@@ -393,9 +390,12 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/Contact"
-              default: []
               description: The contacts of the customer. Contact marked as primary is the
                 target for invoice sharing.
+            externalId:
+              type: string
+              minLength: 1
+              description: The external ID of the customer
             id:
               type: string
             createdAt:
@@ -423,12 +423,9 @@ components:
                 type: string
                 minLength: 1
                 description: The name of the customer
-              externalId:
-                type: string
-                minLength: 1
-                description: The external ID of the customer
               aliases:
                 type: array
+                nullable: true
                 items:
                   type: string
                   minLength: 1
@@ -440,9 +437,12 @@ components:
                 type: array
                 items:
                   $ref: "#/components/schemas/Contact"
-                default: []
                 description: The contacts of the customer. Contact marked as primary is the
                   target for invoice sharing.
+              externalId:
+                type: string
+                minLength: 1
+                description: The external ID of the customer
               id:
                 type: string
               createdAt:
@@ -476,12 +476,9 @@ components:
               type: string
               minLength: 1
               description: The name of the customer
-            externalId:
-              type: string
-              minLength: 1
-              description: The external ID of the customer
             aliases:
               type: array
+              nullable: true
               items:
                 type: string
                 minLength: 1
@@ -493,9 +490,12 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/Contact"
-              default: []
               description: The contacts of the customer. Contact marked as primary is the
                 target for invoice sharing.
+            externalId:
+              type: string
+              minLength: 1
+              description: The external ID of the customer
             id:
               type: string
             createdAt:
@@ -518,12 +518,9 @@ components:
           type: string
           minLength: 1
           description: The name of the customer
-        externalId:
-          type: string
-          minLength: 1
-          description: The external ID of the customer
         aliases:
           type: array
+          nullable: true
           items:
             type: string
             minLength: 1
@@ -535,9 +532,12 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Contact"
-          default: []
           description: The contacts of the customer. Contact marked as primary is the
             target for invoice sharing.
+        externalId:
+          type: string
+          minLength: 1
+          description: The external ID of the customer
       additionalProperties: false
     UpdateCustomerResponse:
       type: object
@@ -549,12 +549,9 @@ components:
               type: string
               minLength: 1
               description: The name of the customer
-            externalId:
-              type: string
-              minLength: 1
-              description: The external ID of the customer
             aliases:
               type: array
+              nullable: true
               items:
                 type: string
                 minLength: 1
@@ -566,9 +563,12 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/Contact"
-              default: []
               description: The contacts of the customer. Contact marked as primary is the
                 target for invoice sharing.
+            externalId:
+              type: string
+              minLength: 1
+              description: The external ID of the customer
             id:
               type: string
             createdAt:
@@ -594,12 +594,9 @@ components:
               type: string
               minLength: 1
               description: The name of the customer
-            externalId:
-              type: string
-              minLength: 1
-              description: The external ID of the customer
             aliases:
               type: array
+              nullable: true
               items:
                 type: string
                 minLength: 1
@@ -611,9 +608,12 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/Contact"
-              default: []
               description: The contacts of the customer. Contact marked as primary is the
                 target for invoice sharing.
+            externalId:
+              type: string
+              minLength: 1
+              description: The external ID of the customer
             id:
               type: string
             createdAt:
@@ -2090,6 +2090,8 @@ components:
       type: string
     ReportId:
       type: string
+    ExternalId:
+      type: string
 paths:
   /customers:
     post:
@@ -2983,6 +2985,34 @@ paths:
           description: Unauthorized
         "413":
           description: Request Entity Too Large
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+  /customers/externalId/{externalId}:
+    get:
+      tags:
+        - customers
+      operationId: getCustomerByExternalId
+      description: Use this endpoint to get a specific customer using its external Id.
+      summary: Get customer by externalId
+      security:
+        - BearerAuthorizer: []
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/ExternalId"
+          required: true
+          in: path
+          name: externalId
+      responses:
+        "200":
+          $ref: "#/components/responses/GetCustomerResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
         "429":
           description: Too Many Requests
         "500":
