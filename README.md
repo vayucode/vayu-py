@@ -219,6 +219,7 @@ The Vayu API client library provides access to the following features:
 - **Customers**
   - `customers.list()`
   - `customers.get()`
+  - `customers.getByExternalId()`
   - `customers.create()`
   - `customers.update()`
   - `customers.delete()`

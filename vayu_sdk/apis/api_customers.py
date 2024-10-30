@@ -34,6 +34,11 @@ class CustomersAPI:
         response = self.__client.get_customer(customer_id=id)
 
         return response
+    
+    def getByExternalId(self, external_id: str):
+        response = self.__client.get_customer_by_external_id(external_id=external_id)
+
+        return response
 
     def create(
         self, name: str, external_id: str, aliases: List[str] = [], address: Address = None, contacts: List[Contact] = None
