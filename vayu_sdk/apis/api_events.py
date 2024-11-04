@@ -48,12 +48,12 @@ class EventsAPI:
         return response
 
     def send(self, events: List[Event]):
-        request = SendEventsRequest(events)
+        request = SendEventsRequest(events=events)
 
         return self.__client.send_events(send_events_request=request)
 
     def dry_run(self, events: List[Event]):
-        request = SendEventsRequest(events)
+        request = SendEventsRequest(events=events)
 
         return self.__client.send_events_dry_run(events_dry_run_request=request)
 
