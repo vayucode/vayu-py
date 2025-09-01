@@ -13,7 +13,7 @@ def read_requirements():
     return requirements
 
 setup(
-    name="vayu-py",
+    name="vayu-client",
     version=__version__,
     packages=find_packages(),
     install_requires=read_requirements(),
