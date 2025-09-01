@@ -148,3 +148,5 @@ openapitools.json
 .openapi-generator
 .openapi-generator-ignore
 openapi_README.md
+
+.vscode
