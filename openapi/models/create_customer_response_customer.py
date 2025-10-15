@@ -24,6 +24,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from openapi.models.address import Address
 from openapi.models.contact import Contact
+from openapi.models.customer_source import CustomerSource
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -35,12 +36,14 @@ class CreateCustomerResponseCustomer(BaseModel):
     aliases: Optional[List[Annotated[str, Field(min_length=1, strict=True)]]] = Field(default=None, description="The aliases of the customer used to match events to the customer.")
     address: Optional[Address] = None
     contacts: Optional[List[Contact]] = Field(default=None, description="The contacts of the customer. Contact marked as primary is the target for invoice sharing.")
+    source: Optional[CustomerSource] = None
     external_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The external ID of the customer", alias="externalId")
+    customer_erp_id: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(default=None, description="The ID of the customer in the ERP system", alias="customerErpId")
     id: StrictStr
     created_at: datetime = Field(alias="createdAt")
     updated_at: datetime = Field(alias="updatedAt")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["name", "aliases", "address", "contacts", "externalId", "id", "createdAt", "updatedAt"]
+    __properties: ClassVar[List[str]] = ["name", "aliases", "address", "contacts", "source", "externalId", "customerErpId", "id", "createdAt", "updatedAt"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -103,6 +106,16 @@ class CreateCustomerResponseCustomer(BaseModel):
         if self.aliases is None and "aliases" in self.model_fields_set:
             _dict['aliases'] = None
 
+        # set to None if source (nullable) is None
+        # and model_fields_set contains the field
+        if self.source is None and "source" in self.model_fields_set:
+            _dict['source'] = None
+
+        # set to None if customer_erp_id (nullable) is None
+        # and model_fields_set contains the field
+        if self.customer_erp_id is None and "customer_erp_id" in self.model_fields_set:
+            _dict['customerErpId'] = None
+
         return _dict
 
     @classmethod
@@ -119,7 +132,9 @@ class CreateCustomerResponseCustomer(BaseModel):
             "aliases": obj.get("aliases"),
             "address": Address.from_dict(obj["address"]) if obj.get("address") is not None else None,
             "contacts": [Contact.from_dict(_item) for _item in obj["contacts"]] if obj.get("contacts") is not None else None,
+            "source": obj.get("source"),
             "externalId": obj.get("externalId"),
+            "customerErpId": obj.get("customerErpId"),
             "id": obj.get("id"),
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt")

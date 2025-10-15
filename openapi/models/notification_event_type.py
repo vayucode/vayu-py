@@ -31,6 +31,12 @@ class NotificationEventType(str, Enum):
     OVERAGE = 'Overage'
     UPCOMINGRENEWAL = 'UpcomingRenewal'
     INVOICEAPPROVED = 'InvoiceApproved'
+    CUSTOMERPORTALLINKSENT = 'CustomerPortalLinkSent'
+    NEWCUSTOMERWITHOUTCONTRACT = 'NewCustomerWithoutContract'
+    MONTHENDREPORT = 'MonthEndReport'
+    UNCHARGEDEVENTS = 'UnchargedEvents'
+    TIERCROSSED = 'TierCrossed'
+    COMMITMENTCROSSED = 'CommitmentCrossed'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
