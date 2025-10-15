@@ -1,15 +1,19 @@
-from openapi.api.events_api import EventsApi
-from vayu_sdk.clients.vayu_client import VayuClient
-from openapi.models.send_events_request import SendEventsRequest
-from typing import List
 from datetime import datetime
+from typing import List
 
-from openapi.models.event import Event
-from openapi.models.get_event_response import GetEventResponse
+from openapi.api.events_api import EventsApi
 from openapi.models.delete_event_response import DeleteEventResponse
-from openapi.models.query_events_response import QueryEventsResponse
-from openapi.models.send_events_response import SendEventsResponse
+from openapi.models.delete_events_by_refs_request import \
+    DeleteEventsByRefsRequest
+from openapi.models.delete_events_by_refs_response import \
+    DeleteEventsByRefsResponse
+from openapi.models.event import Event
 from openapi.models.events_dry_run_response import EventsDryRunResponse
+from openapi.models.get_event_response import GetEventResponse
+from openapi.models.query_events_response import QueryEventsResponse
+from openapi.models.send_events_request import SendEventsRequest
+from openapi.models.send_events_response import SendEventsResponse
+from vayu_sdk.clients.vayu_client import VayuClient
 
 
 class EventsAPI:
@@ -28,6 +32,11 @@ class EventsAPI:
         response = self.__client.delete_event_by_ref_id(ref_id=ref)
 
         return response
+
+    def delete_by_refs(self, refs: List[str]):
+        request = DeleteEventsByRefsRequest(refs=refs)
+
+        return self.__client.delete_events_by_refs(delete_events_by_refs_request=request)
 
     def query(
         self,
