@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -29,10 +29,22 @@ class Contact(BaseModel):
     Contact
     """ # noqa: E501
     name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = None
-    email: StrictStr
-    is_primary: Optional[StrictBool] = Field(default=None, alias="isPrimary")
+    email: Optional[StrictStr] = None
+    title: Optional[StrictStr] = None
+    phone: Optional[Annotated[str, Field(strict=True)]] = None
+    receive_invoice_email: Optional[StrictBool] = Field(default=None, alias="receiveInvoiceEmail")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["name", "email", "isPrimary"]
+    __properties: ClassVar[List[str]] = ["name", "email", "title", "phone", "receiveInvoiceEmail"]
+
+    @field_validator('phone')
+    def phone_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if value is None:
+            return value
+
+        if not re.match(r"^\+?[1-9]\d{4,15}$", value):
+            raise ValueError(r"must validate the regular expression /^\+?[1-9]\d{4,15}$/")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -94,7 +106,9 @@ class Contact(BaseModel):
         _obj = cls.model_validate({
             "name": obj.get("name"),
             "email": obj.get("email"),
-            "isPrimary": obj.get("isPrimary")
+            "title": obj.get("title"),
+            "phone": obj.get("phone"),
+            "receiveInvoiceEmail": obj.get("receiveInvoiceEmail")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

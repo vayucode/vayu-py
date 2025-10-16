@@ -271,7 +271,9 @@ class ContractsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -558,7 +560,9 @@ class ContractsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -832,7 +836,9 @@ class ContractsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
@@ -879,7 +885,7 @@ class ContractsApi:
     @validate_call
     def list_contracts(
         self,
-        limit: Optional[Union[Annotated[float, Field(le=1000, strict=True)], Annotated[int, Field(le=1000, strict=True)]]] = None,
+        limit: Optional[Union[Annotated[float, Field(le=1000, strict=True, ge=1)], Annotated[int, Field(le=1000, strict=True, ge=1)]]] = None,
         cursor: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
@@ -954,7 +960,7 @@ class ContractsApi:
     @validate_call
     def list_contracts_with_http_info(
         self,
-        limit: Optional[Union[Annotated[float, Field(le=1000, strict=True)], Annotated[int, Field(le=1000, strict=True)]]] = None,
+        limit: Optional[Union[Annotated[float, Field(le=1000, strict=True, ge=1)], Annotated[int, Field(le=1000, strict=True, ge=1)]]] = None,
         cursor: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
@@ -1029,7 +1035,7 @@ class ContractsApi:
     @validate_call
     def list_contracts_without_preload_content(
         self,
-        limit: Optional[Union[Annotated[float, Field(le=1000, strict=True)], Annotated[int, Field(le=1000, strict=True)]]] = None,
+        limit: Optional[Union[Annotated[float, Field(le=1000, strict=True, ge=1)], Annotated[int, Field(le=1000, strict=True, ge=1)]]] = None,
         cursor: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
@@ -1116,7 +1122,9 @@ class ContractsApi:
         _query_params: List[Tuple[str, str]] = []
         _header_params: Dict[str, Optional[str]] = _headers or {}
         _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
         _body_params: Optional[bytes] = None
 
         # process the path parameters
