@@ -3,6 +3,10 @@ from typing import List
 
 from openapi.api.events_api import EventsApi
 from openapi.models.delete_event_response import DeleteEventResponse
+from openapi.models.delete_events_by_refs_request import \
+    DeleteEventsByRefsRequest
+from openapi.models.delete_events_by_refs_response import \
+    DeleteEventsByRefsResponse
 from openapi.models.event import Event
 from openapi.models.events_dry_run_request import EventsDryRunRequest
 from openapi.models.events_dry_run_response import EventsDryRunResponse
@@ -29,6 +33,13 @@ class EventsAPI:
         response = self.__client.delete_event_by_ref_id(ref_id=ref)
 
         return response
+
+    def delete_by_refs(self, refs: List[str]):
+        request = DeleteEventsByRefsRequest(refs=refs)
+
+        return self.__client.delete_events_by_refs(
+            delete_events_by_refs_request=request
+        )
 
     def query(
         self,
