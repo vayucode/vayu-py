@@ -1,5 +1,6 @@
+from .apis import *
 from .clients import VayuClient
-from .apis import * 
+
 
 class Vayu:
     __api_key: str = None
@@ -31,10 +32,6 @@ class Vayu:
     def meters(self) -> MetersAPI:
         return MetersAPI(self.__client)
 
-    @property
-    def plans(self) -> PlansAPI:
-        return PlansAPI(self.__client)
-    
     @property
     def webhooks(self) -> WebhooksAPI:
         return WebhooksAPI(self.__client)
