@@ -18,9 +18,12 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing_extensions import Annotated
 from openapi.models.billing_cycle_status import BillingCycleStatus
+from openapi.models.integration_entity import IntegrationEntity
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -28,12 +31,24 @@ class CreditLedgerEntry(BaseModel):
     """
     CreditLedgerEntry
     """ # noqa: E501
+    id: Annotated[str, Field(strict=True)]
+    created_at: datetime = Field(alias="createdAt")
     type: BillingCycleStatus
     amount: Union[StrictFloat, StrictInt]
-    invoice_id: Optional[StrictStr] = Field(default=None, alias="invoiceId")
     balance_after_entry: Union[StrictFloat, StrictInt] = Field(alias="balanceAfterEntry")
+    invoice_id: Optional[StrictStr] = Field(default=None, alias="invoiceId")
+    erp_id: Optional[StrictStr] = Field(default=None, alias="erpId")
+    contract_id: Optional[StrictStr] = Field(default=None, alias="contractId")
+    integration_entities: List[IntegrationEntity] = Field(alias="integrationEntities")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["type", "amount", "invoiceId", "balanceAfterEntry"]
+    __properties: ClassVar[List[str]] = ["id", "createdAt", "type", "amount", "balanceAfterEntry", "invoiceId", "erpId", "contractId", "integrationEntities"]
+
+    @field_validator('id')
+    def id_validate_regular_expression(cls, value):
+        """Validates the regular expression"""
+        if not re.match(r"^[0-9a-fA-F]{24}$", value):
+            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -76,6 +91,13 @@ class CreditLedgerEntry(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in integration_entities (list)
+        _items = []
+        if self.integration_entities:
+            for _item_integration_entities in self.integration_entities:
+                if _item_integration_entities:
+                    _items.append(_item_integration_entities.to_dict())
+            _dict['integrationEntities'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -93,10 +115,15 @@ class CreditLedgerEntry(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "id": obj.get("id"),
+            "createdAt": obj.get("createdAt"),
             "type": obj.get("type"),
             "amount": obj.get("amount"),
+            "balanceAfterEntry": obj.get("balanceAfterEntry"),
             "invoiceId": obj.get("invoiceId"),
-            "balanceAfterEntry": obj.get("balanceAfterEntry")
+            "erpId": obj.get("erpId"),
+            "contractId": obj.get("contractId"),
+            "integrationEntities": [IntegrationEntity.from_dict(_item) for _item in obj["integrationEntities"]] if obj.get("integrationEntities") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

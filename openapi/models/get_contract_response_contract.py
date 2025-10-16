@@ -22,6 +22,7 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from openapi.models.get_contract_response_contract_products_inner import GetContractResponseContractProductsInner
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -30,24 +31,19 @@ class GetContractResponseContract(BaseModel):
     GetContractResponseContract
     """ # noqa: E501
     start_date: datetime = Field(description="The start date of the contract", alias="startDate")
-    end_date: Optional[datetime] = Field(default=None, description="The end date of the contract", alias="endDate")
     customer_id: Annotated[str, Field(strict=True)] = Field(description="The id of the customer that the contract is associated with", alias="customerId")
-    plan_id: Annotated[str, Field(strict=True)] = Field(description="The id of the plan that the contract is associated with", alias="planId")
+    name: StrictStr = Field(description="The name of the contract")
+    sales_force_opportunity_id: Optional[StrictStr] = Field(default=None, description="The id of the sales force opportunity that the contract is associated with", alias="salesForceOpportunityId")
+    end_date: Optional[datetime] = Field(default=None, description="The end date of the contract", alias="endDate")
+    products: Optional[List[GetContractResponseContractProductsInner]] = Field(default=None, description="The products that the contract is associated with")
     id: StrictStr
     created_at: datetime = Field(alias="createdAt")
     updated_at: datetime = Field(alias="updatedAt")
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["startDate", "endDate", "customerId", "planId", "id", "createdAt", "updatedAt"]
+    __properties: ClassVar[List[str]] = ["startDate", "customerId", "name", "salesForceOpportunityId", "endDate", "products", "id", "createdAt", "updatedAt"]
 
     @field_validator('customer_id')
     def customer_id_validate_regular_expression(cls, value):
-        """Validates the regular expression"""
-        if not re.match(r"^[0-9a-fA-F]{24}$", value):
-            raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
-        return value
-
-    @field_validator('plan_id')
-    def plan_id_validate_regular_expression(cls, value):
         """Validates the regular expression"""
         if not re.match(r"^[0-9a-fA-F]{24}$", value):
             raise ValueError(r"must validate the regular expression /^[0-9a-fA-F]{24}$/")
@@ -94,10 +90,22 @@ class GetContractResponseContract(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in products (list)
+        _items = []
+        if self.products:
+            for _item_products in self.products:
+                if _item_products:
+                    _items.append(_item_products.to_dict())
+            _dict['products'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
                 _dict[_key] = _value
+
+        # set to None if end_date (nullable) is None
+        # and model_fields_set contains the field
+        if self.end_date is None and "end_date" in self.model_fields_set:
+            _dict['endDate'] = None
 
         return _dict
 
@@ -112,9 +120,11 @@ class GetContractResponseContract(BaseModel):
 
         _obj = cls.model_validate({
             "startDate": obj.get("startDate"),
-            "endDate": obj.get("endDate"),
             "customerId": obj.get("customerId"),
-            "planId": obj.get("planId"),
+            "name": obj.get("name"),
+            "salesForceOpportunityId": obj.get("salesForceOpportunityId"),
+            "endDate": obj.get("endDate"),
+            "products": [GetContractResponseContractProductsInner.from_dict(_item) for _item in obj["products"]] if obj.get("products") is not None else None,
             "id": obj.get("id"),
             "createdAt": obj.get("createdAt"),
             "updatedAt": obj.get("updatedAt")

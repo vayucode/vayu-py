@@ -37,6 +37,8 @@ class CriterionOperator(str, Enum):
     LOWERTHAN = 'LowerThan'
     LOWEREQUALTO = 'LowerEqualTo'
     LARGEREQUALTO = 'LargerEqualTo'
+    EXISTS = 'Exists'
+    DOESNTEXISTS = 'DoesntExists'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

@@ -1,6 +1,9 @@
-from setuptools import setup, find_packages
-from vayu_sdk import __version__
 import os
+
+from setuptools import find_packages, setup
+
+from vayu_sdk import __version__
+
 
 def read_requirements():
     requirements = []
@@ -10,10 +13,11 @@ def read_requirements():
     return requirements
 
 setup(
-    name="vayu-py",
+    name="vayu-client",
     version=__version__,
     packages=find_packages(),
-    install_requires=read_requirements(),    
+    install_requires=read_requirements(),
+    python_requires=">=3.7",
     description="The Vayu API client library in Python",
     author="Vayu Team",
     author_email="team@withvayu.com",
