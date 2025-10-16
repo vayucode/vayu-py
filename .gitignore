@@ -150,3 +150,5 @@ openapitools.json
 openapi_README.md
 
 .vscode
+
+.DS_Store
