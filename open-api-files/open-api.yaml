@@ -26,20 +26,10 @@ tags:
     description: The customers tag is used for endpoints related to customer management.
   - name: meters
     description: The meters tag is used for endpoints related to meter management.
-  - name: plans
-    description: The plans tag is used for endpoints related to plan management.
   - name: contracts
     description: The contracts tag is used for endpoints related to contract management.
   - name: invoices
     description: The invoices tag is used for endpoints related to invoice management.
-  - name: billing-cycles
-    description: The billing-cycles tag is used for endpoints related to billing
-      cycle management.
-  - name: reports
-    description: The reports tag is used for endpoints related to report generation
-  - name: integrations
-    description: The integrations tag is used for endpoints related to integrations
-      with external systems
   - name: credits
     description: The credits tag is used for endpoints related to credit management.
   - name: webhooks
@@ -51,6 +41,18 @@ components:
       scheme: bearer
       bearerFormat: JWT
   requestBodies:
+    CreateCatalogProductRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateCatalogProductRequest"
+    UpdateCatalogProductRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateCatalogProductRequest"
     CreateCustomerRequest:
       required: true
       content:
@@ -75,12 +77,26 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/CreateContractRequest"
+    CreateMeasurementRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateMeasurementRequest"
     LoginRequest:
       required: true
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/LoginRequest"
+    DeleteEventsByRefsRequest:
+      required: true
+      description: A list of event refs to delete. The request deletes the matching
+        events for the authenticated account.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DeleteEventsByRefsRequest"
     EventsDryRunRequest:
       required: true
       description: >-
@@ -101,18 +117,6 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/SendEventsRequest"
-    NetSuiteSyncInvoicesRequest:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/NetSuiteSyncInvoicesRequest"
-    NetSuiteExportSalesOrderRequest:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/NetSuiteExportSalesOrderRequest"
     GrantCreditsRequest:
       required: true
       content:
@@ -133,6 +137,36 @@ components:
           schema:
             $ref: "#/components/schemas/WebhookSubscribeRequest"
   responses:
+    CreateCatalogProductResponse:
+      description: RequestSuccess
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateCatalogProductResponse"
+    ListCatalogProductsResponse:
+      description: RequestSuccess
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ListCatalogProductsResponse"
+    GetCatalogProductResponse:
+      description: RequestSuccess
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GetCatalogProductResponse"
+    UpdateCatalogProductResponse:
+      description: RequestSuccess
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateCatalogProductResponse"
+    DeleteCatalogProductResponse:
+      description: RequestSuccess
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DeleteCatalogProductResponse"
     CreateCustomerResponse:
       description: RequestSuccess
       content:
@@ -187,24 +221,6 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ListMetersResponse"
-    GetPlanResponse:
-      description: RequestSuccess
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/GetPlanResponse"
-    DeletePlanResponse:
-      description: RequestSuccess
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/DeletePlanResponse"
-    ListPlansResponse:
-      description: RequestSuccess
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ListPlansResponse"
     GetContractResponse:
       description: RequestSuccess
       content:
@@ -229,6 +245,30 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/CreateContractResponse"
+    CreateMeasurementResponse:
+      description: RequestSuccess
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateMeasurementResponse"
+    ListMeasurementsResponse:
+      description: RequestSuccess
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ListMeasurementsResponse"
+    GetMeasurementResponse:
+      description: RequestSuccess
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GetMeasurementResponse"
+    DeleteMeasurementResponse:
+      description: RequestSuccess
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DeleteMeasurementResponse"
     GetInvoiceResponse:
       description: RequestSuccess
       content:
@@ -247,6 +287,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/LoginResponse"
+    DeleteEventsByRefsResponse:
+      description: Contains the events that were removed along with deletion metadata.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DeleteEventsByRefsResponse"
     EventsDryRunResponse:
       description: Events with their corresponding meter and customer data.
       content:
@@ -277,34 +323,238 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/DeleteEventResponse"
-    GetProductsUsageReportResponse:
-      description: response contains the products usage report
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/GetProductsUsageReportResponse"
-    GetCommitmentReportResponse:
-      description: response contains the commitment report
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/GetCommitmentReportResponse"
-    NetSuiteSyncInvoicesResponse:
-      description: RequestSuccess
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/NetSuiteSyncInvoicesResponse"
-    RequestSuccess:
-      description: RequestSuccess
     ListCreditLedgerEntriesResponse:
       description: RequestSuccess
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/ListCreditLedgerEntriesResponse"
+    RequestSuccess:
+      description: RequestSuccess
+    GetCustomerProductsConsumptionsResponse:
+      description: response contains the products consumptions by the customer id
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GetCustomerProductsConsumptionsResponse"
+    GetCustomerProductsConsumptionsByAliasResponse:
+      description: response contains the products consumptions by the customer alias
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GetCustomerProductsConsumptionsByAliasResponse"
+    GetProductConsumptionResponse:
+      description: The response from the get product consumption action
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GetProductConsumptionResponse"
   parameters: {}
   schemas:
+    CreateCatalogProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The name of the catalog product
+        description:
+          type: string
+          description: The description of the catalog product
+        externalId:
+          type: string
+          minLength: 1
+          description: The external ID of the catalog product
+      required:
+        - name
+    CreateCatalogProductResponse:
+      type: object
+      properties:
+        catalogProduct:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              description: The name of the catalog product
+            description:
+              type: string
+              description: The description of the catalog product
+            externalId:
+              type: string
+              minLength: 1
+              description: The external ID of the catalog product
+            id:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+          required:
+            - name
+            - id
+            - createdAt
+            - updatedAt
+      required:
+        - catalogProduct
+    ListCatalogProductsResponse:
+      type: object
+      properties:
+        catalogProducts:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+                description: The name of the catalog product
+              description:
+                type: string
+                description: The description of the catalog product
+              externalId:
+                type: string
+                minLength: 1
+                description: The external ID of the catalog product
+              id:
+                type: string
+              createdAt:
+                type: string
+                format: date-time
+              updatedAt:
+                type: string
+                format: date-time
+            required:
+              - name
+              - id
+              - createdAt
+              - updatedAt
+        total:
+          type: number
+        hasMore:
+          type: boolean
+        nextCursor:
+          type: string
+      required:
+        - catalogProducts
+        - total
+        - hasMore
+    GetCatalogProductResponse:
+      type: object
+      properties:
+        catalogProduct:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              description: The name of the catalog product
+            description:
+              type: string
+              description: The description of the catalog product
+            externalId:
+              type: string
+              minLength: 1
+              description: The external ID of the catalog product
+            id:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+          required:
+            - name
+            - id
+            - createdAt
+            - updatedAt
+      required:
+        - catalogProduct
+    UpdateCatalogProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The name of the catalog product
+        description:
+          type: string
+          description: The description of the catalog product
+        externalId:
+          type: string
+          minLength: 1
+          description: The external ID of the catalog product
+      additionalProperties: false
+    UpdateCatalogProductResponse:
+      type: object
+      properties:
+        catalogProduct:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              description: The name of the catalog product
+            description:
+              type: string
+              description: The description of the catalog product
+            externalId:
+              type: string
+              minLength: 1
+              description: The external ID of the catalog product
+            id:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+          required:
+            - name
+            - id
+            - createdAt
+            - updatedAt
+      required:
+        - catalogProduct
+    DeleteCatalogProductResponse:
+      type: object
+      properties:
+        catalogProduct:
+          type: object
+          properties:
+            name:
+              type: string
+              minLength: 1
+              description: The name of the catalog product
+            description:
+              type: string
+              description: The description of the catalog product
+            externalId:
+              type: string
+              minLength: 1
+              description: The external ID of the catalog product
+            id:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+            deletedAt:
+              type: string
+          required:
+            - name
+            - id
+            - createdAt
+            - updatedAt
+            - deletedAt
+      required:
+        - catalogProduct
     Address:
       type: object
       properties:
@@ -333,10 +583,23 @@ components:
         email:
           type: string
           format: email
-        isPrimary:
+        title:
+          type: string
+        phone:
+          type: string
+          pattern: ^\+?[1-9]\d{4,15}$
+        receiveInvoiceEmail:
           type: boolean
-      required:
-        - email
+    CustomerSource:
+      type: string
+      nullable: true
+      enum:
+        - Stripe
+        - Ingestion
+        - Api
+        - Salesforce
+        - HubSpot
+      description: The source of the customer
     CreateCustomerRequest:
       type: object
       properties:
@@ -360,10 +623,17 @@ components:
             $ref: "#/components/schemas/Contact"
           description: The contacts of the customer. Contact marked as primary is the
             target for invoice sharing.
+        source:
+          $ref: "#/components/schemas/CustomerSource"
         externalId:
           type: string
           minLength: 1
           description: The external ID of the customer
+        customerErpId:
+          type: string
+          nullable: true
+          minLength: 1
+          description: The ID of the customer in the ERP system
       required:
         - name
     CreateCustomerResponse:
@@ -392,10 +662,17 @@ components:
                 $ref: "#/components/schemas/Contact"
               description: The contacts of the customer. Contact marked as primary is the
                 target for invoice sharing.
+            source:
+              $ref: "#/components/schemas/CustomerSource"
             externalId:
               type: string
               minLength: 1
               description: The external ID of the customer
+            customerErpId:
+              type: string
+              nullable: true
+              minLength: 1
+              description: The ID of the customer in the ERP system
             id:
               type: string
             createdAt:
@@ -439,10 +716,17 @@ components:
                   $ref: "#/components/schemas/Contact"
                 description: The contacts of the customer. Contact marked as primary is the
                   target for invoice sharing.
+              source:
+                $ref: "#/components/schemas/CustomerSource"
               externalId:
                 type: string
                 minLength: 1
                 description: The external ID of the customer
+              customerErpId:
+                type: string
+                nullable: true
+                minLength: 1
+                description: The ID of the customer in the ERP system
               id:
                 type: string
               createdAt:
@@ -492,10 +776,17 @@ components:
                 $ref: "#/components/schemas/Contact"
               description: The contacts of the customer. Contact marked as primary is the
                 target for invoice sharing.
+            source:
+              $ref: "#/components/schemas/CustomerSource"
             externalId:
               type: string
               minLength: 1
               description: The external ID of the customer
+            customerErpId:
+              type: string
+              nullable: true
+              minLength: 1
+              description: The ID of the customer in the ERP system
             id:
               type: string
             createdAt:
@@ -534,10 +825,17 @@ components:
             $ref: "#/components/schemas/Contact"
           description: The contacts of the customer. Contact marked as primary is the
             target for invoice sharing.
+        source:
+          $ref: "#/components/schemas/CustomerSource"
         externalId:
           type: string
           minLength: 1
           description: The external ID of the customer
+        customerErpId:
+          type: string
+          nullable: true
+          minLength: 1
+          description: The ID of the customer in the ERP system
       additionalProperties: false
     UpdateCustomerResponse:
       type: object
@@ -565,10 +863,17 @@ components:
                 $ref: "#/components/schemas/Contact"
               description: The contacts of the customer. Contact marked as primary is the
                 target for invoice sharing.
+            source:
+              $ref: "#/components/schemas/CustomerSource"
             externalId:
               type: string
               minLength: 1
               description: The external ID of the customer
+            customerErpId:
+              type: string
+              nullable: true
+              minLength: 1
+              description: The ID of the customer in the ERP system
             id:
               type: string
             createdAt:
@@ -610,10 +915,17 @@ components:
                 $ref: "#/components/schemas/Contact"
               description: The contacts of the customer. Contact marked as primary is the
                 target for invoice sharing.
+            source:
+              $ref: "#/components/schemas/CustomerSource"
             externalId:
               type: string
               minLength: 1
               description: The external ID of the customer
+            customerErpId:
+              type: string
+              nullable: true
+              minLength: 1
+              description: The ID of the customer in the ERP system
             id:
               type: string
             createdAt:
@@ -675,6 +987,8 @@ components:
         - LowerThan
         - LowerEqualTo
         - LargerEqualTo
+        - Exists
+        - DoesntExists
     Criterion:
       type: object
       properties:
@@ -883,160 +1197,6 @@ components:
         - meters
         - total
         - hasMore
-    PlanStatus:
-      type: string
-      enum:
-        - Active
-        - Inactive
-        - Error
-      description: The status of the plan. plan statuses are active, inactive
-    BillingInterval:
-      type: string
-      enum:
-        - Monthly
-        - BiMonthly
-        - Quarterly
-        - SixMonths
-        - Yearly
-    PaymentTerm:
-      type: string
-      enum:
-        - Prepayment
-        - Postpayment
-      default: Postpayment
-      description: flag to indicate if the payment is postpayment or prepayment
-    PlanBillingData:
-      type: object
-      properties:
-        billingInterval:
-          $ref: "#/components/schemas/BillingInterval"
-        duration:
-          type: number
-          minimum: 0
-          exclusiveMinimum: true
-        paymentTerm:
-          $ref: "#/components/schemas/PaymentTerm"
-        autoRenewal:
-          type: boolean
-          default: false
-        proRated:
-          type: boolean
-          default: true
-      required:
-        - billingInterval
-        - duration
-        - paymentTerm
-        - autoRenewal
-        - proRated
-      description: The billing data of the plan. The billing data contains the billing
-        interval, the plan duration the payment terms and auto renewal, and the
-        billing method.
-    GetPlanResponse:
-      type: object
-      properties:
-        plan:
-          type: object
-          properties:
-            name:
-              type: string
-              minLength: 1
-              description: The name of the plan
-            status:
-              $ref: "#/components/schemas/PlanStatus"
-            billingData:
-              $ref: "#/components/schemas/PlanBillingData"
-            id:
-              type: string
-            createdAt:
-              type: string
-              format: date-time
-            updatedAt:
-              type: string
-              format: date-time
-          required:
-            - name
-            - status
-            - billingData
-            - id
-            - createdAt
-            - updatedAt
-      required:
-        - plan
-    DeletePlanResponse:
-      type: object
-      properties:
-        plan:
-          type: object
-          properties:
-            name:
-              type: string
-              minLength: 1
-              description: The name of the plan
-            status:
-              $ref: "#/components/schemas/PlanStatus"
-            billingData:
-              $ref: "#/components/schemas/PlanBillingData"
-            id:
-              type: string
-            createdAt:
-              type: string
-              format: date-time
-            updatedAt:
-              type: string
-              format: date-time
-            deletedAt:
-              type: string
-          required:
-            - name
-            - status
-            - billingData
-            - id
-            - createdAt
-            - updatedAt
-            - deletedAt
-      required:
-        - plan
-    ListPlansResponse:
-      type: object
-      properties:
-        plans:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                minLength: 1
-                description: The name of the plan
-              status:
-                $ref: "#/components/schemas/PlanStatus"
-              billingData:
-                $ref: "#/components/schemas/PlanBillingData"
-              id:
-                type: string
-              createdAt:
-                type: string
-                format: date-time
-              updatedAt:
-                type: string
-                format: date-time
-            required:
-              - name
-              - status
-              - billingData
-              - id
-              - createdAt
-              - updatedAt
-        total:
-          type: number
-        hasMore:
-          type: boolean
-        nextCursor:
-          type: string
-      required:
-        - plans
-        - total
-        - hasMore
     GetContractResponse:
       type: object
       properties:
@@ -1047,18 +1207,224 @@ components:
               type: string
               description: The start date of the contract
               format: date-time
-            endDate:
-              type: string
-              description: The end date of the contract
-              format: date-time
             customerId:
               type: string
               pattern: ^[0-9a-fA-F]{24}$
               description: The id of the customer that the contract is associated with
-            planId:
+            name:
               type: string
-              pattern: ^[0-9a-fA-F]{24}$
-              description: The id of the plan that the contract is associated with
+              description: The name of the contract
+            salesForceOpportunityId:
+              type: string
+              description: The id of the sales force opportunity that the contract is
+                associated with
+            endDate:
+              type: string
+              nullable: true
+              description: The end date of the contract
+              format: date-time
+            products:
+              type: array
+              items:
+                type: object
+                properties:
+                  displayName:
+                    type: string
+                  description:
+                    type: string
+                    nullable: true
+                  scheduling:
+                    type: object
+                    properties:
+                      billingDay:
+                        type: integer
+                        minimum: 1
+                        maximum: 31
+                        default: 1
+                        description: The day of the month that the product is billed
+                      duration:
+                        type: object
+                        properties:
+                          unit:
+                            type: string
+                            enum:
+                              - DAY
+                              - WEEK
+                              - MONTH
+                              - YEAR
+                            default: MONTH
+                          value:
+                            type: integer
+                            minimum: 0
+                            maximum: 1000
+                        required:
+                          - unit
+                          - value
+                        description: The duration of the product
+                    required:
+                      - duration
+                  pricing:
+                    oneOf:
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - ONE_TIME
+                          price:
+                            type: number
+                            minimum: 0
+                        required:
+                          - type
+                          - price
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - CONTRACT_TERMS
+                          price:
+                            type: number
+                            minimum: 0
+                          installments:
+                            type: array
+                            nullable: true
+                            items:
+                              type: object
+                              properties:
+                                installmentDate:
+                                  type: string
+                                  format: date-time
+                                amount:
+                                  type: number
+                                  minimum: 0
+                              required:
+                                - installmentDate
+                                - amount
+                        required:
+                          - type
+                          - price
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - SUBSCRIPTION
+                          price:
+                            type: number
+                            minimum: 0
+                          subscriptionCadence:
+                            type: object
+                            properties:
+                              unit:
+                                type: string
+                                enum:
+                                  - DAY
+                                  - WEEK
+                                  - MONTH
+                                  - YEAR
+                                default: MONTH
+                              value:
+                                type: integer
+                                minimum: 0
+                                maximum: 1000
+                            required:
+                              - unit
+                              - value
+                        required:
+                          - type
+                          - price
+                          - subscriptionCadence
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - TIERED
+                          tiers:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                fromInclusive:
+                                  type: number
+                                  minimum: 0
+                                toExclusive:
+                                  type: number
+                                  nullable: true
+                                  minimum: 0
+                                rate:
+                                  type: number
+                                  nullable: true
+                                  minimum: 0
+                                flatFee:
+                                  type: number
+                                  nullable: true
+                                  minimum: 0
+                                packageSize:
+                                  type: number
+                                  nullable: true
+                                  minimum: 0
+                              required:
+                                - fromInclusive
+                          subscriptionCadence:
+                            type: object
+                            nullable: true
+                            properties:
+                              unit:
+                                type: string
+                                enum:
+                                  - DAY
+                                  - WEEK
+                                  - MONTH
+                                  - YEAR
+                                default: MONTH
+                              value:
+                                type: integer
+                                minimum: 0
+                                maximum: 1000
+                            required:
+                              - unit
+                              - value
+                          autoUpgrade:
+                            type: boolean
+                          prorate:
+                            type: boolean
+                          isRevShare:
+                            type: boolean
+                          baseAmount:
+                            type: number
+                            minimum: 0
+                        required:
+                          - type
+                          - tiers
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - PER_UNIT
+                          price:
+                            type: number
+                            minimum: 0
+                          chunkSize:
+                            type: number
+                            minimum: 0
+                            exclusiveMinimum: true
+                        required:
+                          - type
+                          - price
+                  catalogProductId:
+                    type: string
+                    nullable: true
+                  productErpId:
+                    type: string
+                    nullable: true
+                required:
+                  - displayName
+                  - scheduling
+                  - pricing
+              description: The products that the contract is associated with
             id:
               type: string
             createdAt:
@@ -1070,7 +1436,7 @@ components:
           required:
             - startDate
             - customerId
-            - planId
+            - name
             - id
             - createdAt
             - updatedAt
@@ -1086,18 +1452,224 @@ components:
               type: string
               description: The start date of the contract
               format: date-time
-            endDate:
-              type: string
-              description: The end date of the contract
-              format: date-time
             customerId:
               type: string
               pattern: ^[0-9a-fA-F]{24}$
               description: The id of the customer that the contract is associated with
-            planId:
+            name:
               type: string
-              pattern: ^[0-9a-fA-F]{24}$
-              description: The id of the plan that the contract is associated with
+              description: The name of the contract
+            salesForceOpportunityId:
+              type: string
+              description: The id of the sales force opportunity that the contract is
+                associated with
+            endDate:
+              type: string
+              nullable: true
+              description: The end date of the contract
+              format: date-time
+            products:
+              type: array
+              items:
+                type: object
+                properties:
+                  displayName:
+                    type: string
+                  description:
+                    type: string
+                    nullable: true
+                  scheduling:
+                    type: object
+                    properties:
+                      billingDay:
+                        type: integer
+                        minimum: 1
+                        maximum: 31
+                        default: 1
+                        description: The day of the month that the product is billed
+                      duration:
+                        type: object
+                        properties:
+                          unit:
+                            type: string
+                            enum:
+                              - DAY
+                              - WEEK
+                              - MONTH
+                              - YEAR
+                            default: MONTH
+                          value:
+                            type: integer
+                            minimum: 0
+                            maximum: 1000
+                        required:
+                          - unit
+                          - value
+                        description: The duration of the product
+                    required:
+                      - duration
+                  pricing:
+                    oneOf:
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - ONE_TIME
+                          price:
+                            type: number
+                            minimum: 0
+                        required:
+                          - type
+                          - price
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - CONTRACT_TERMS
+                          price:
+                            type: number
+                            minimum: 0
+                          installments:
+                            type: array
+                            nullable: true
+                            items:
+                              type: object
+                              properties:
+                                installmentDate:
+                                  type: string
+                                  format: date-time
+                                amount:
+                                  type: number
+                                  minimum: 0
+                              required:
+                                - installmentDate
+                                - amount
+                        required:
+                          - type
+                          - price
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - SUBSCRIPTION
+                          price:
+                            type: number
+                            minimum: 0
+                          subscriptionCadence:
+                            type: object
+                            properties:
+                              unit:
+                                type: string
+                                enum:
+                                  - DAY
+                                  - WEEK
+                                  - MONTH
+                                  - YEAR
+                                default: MONTH
+                              value:
+                                type: integer
+                                minimum: 0
+                                maximum: 1000
+                            required:
+                              - unit
+                              - value
+                        required:
+                          - type
+                          - price
+                          - subscriptionCadence
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - TIERED
+                          tiers:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                fromInclusive:
+                                  type: number
+                                  minimum: 0
+                                toExclusive:
+                                  type: number
+                                  nullable: true
+                                  minimum: 0
+                                rate:
+                                  type: number
+                                  nullable: true
+                                  minimum: 0
+                                flatFee:
+                                  type: number
+                                  nullable: true
+                                  minimum: 0
+                                packageSize:
+                                  type: number
+                                  nullable: true
+                                  minimum: 0
+                              required:
+                                - fromInclusive
+                          subscriptionCadence:
+                            type: object
+                            nullable: true
+                            properties:
+                              unit:
+                                type: string
+                                enum:
+                                  - DAY
+                                  - WEEK
+                                  - MONTH
+                                  - YEAR
+                                default: MONTH
+                              value:
+                                type: integer
+                                minimum: 0
+                                maximum: 1000
+                            required:
+                              - unit
+                              - value
+                          autoUpgrade:
+                            type: boolean
+                          prorate:
+                            type: boolean
+                          isRevShare:
+                            type: boolean
+                          baseAmount:
+                            type: number
+                            minimum: 0
+                        required:
+                          - type
+                          - tiers
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - PER_UNIT
+                          price:
+                            type: number
+                            minimum: 0
+                          chunkSize:
+                            type: number
+                            minimum: 0
+                            exclusiveMinimum: true
+                        required:
+                          - type
+                          - price
+                  catalogProductId:
+                    type: string
+                    nullable: true
+                  productErpId:
+                    type: string
+                    nullable: true
+                required:
+                  - displayName
+                  - scheduling
+                  - pricing
+              description: The products that the contract is associated with
             id:
               type: string
             createdAt:
@@ -1111,7 +1683,7 @@ components:
           required:
             - startDate
             - customerId
-            - planId
+            - name
             - id
             - createdAt
             - updatedAt
@@ -1130,18 +1702,224 @@ components:
                 type: string
                 description: The start date of the contract
                 format: date-time
-              endDate:
-                type: string
-                description: The end date of the contract
-                format: date-time
               customerId:
                 type: string
                 pattern: ^[0-9a-fA-F]{24}$
                 description: The id of the customer that the contract is associated with
-              planId:
+              name:
                 type: string
-                pattern: ^[0-9a-fA-F]{24}$
-                description: The id of the plan that the contract is associated with
+                description: The name of the contract
+              salesForceOpportunityId:
+                type: string
+                description: The id of the sales force opportunity that the contract is
+                  associated with
+              endDate:
+                type: string
+                nullable: true
+                description: The end date of the contract
+                format: date-time
+              products:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    displayName:
+                      type: string
+                    description:
+                      type: string
+                      nullable: true
+                    scheduling:
+                      type: object
+                      properties:
+                        billingDay:
+                          type: integer
+                          minimum: 1
+                          maximum: 31
+                          default: 1
+                          description: The day of the month that the product is billed
+                        duration:
+                          type: object
+                          properties:
+                            unit:
+                              type: string
+                              enum:
+                                - DAY
+                                - WEEK
+                                - MONTH
+                                - YEAR
+                              default: MONTH
+                            value:
+                              type: integer
+                              minimum: 0
+                              maximum: 1000
+                          required:
+                            - unit
+                            - value
+                          description: The duration of the product
+                      required:
+                        - duration
+                    pricing:
+                      oneOf:
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - ONE_TIME
+                            price:
+                              type: number
+                              minimum: 0
+                          required:
+                            - type
+                            - price
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - CONTRACT_TERMS
+                            price:
+                              type: number
+                              minimum: 0
+                            installments:
+                              type: array
+                              nullable: true
+                              items:
+                                type: object
+                                properties:
+                                  installmentDate:
+                                    type: string
+                                    format: date-time
+                                  amount:
+                                    type: number
+                                    minimum: 0
+                                required:
+                                  - installmentDate
+                                  - amount
+                          required:
+                            - type
+                            - price
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - SUBSCRIPTION
+                            price:
+                              type: number
+                              minimum: 0
+                            subscriptionCadence:
+                              type: object
+                              properties:
+                                unit:
+                                  type: string
+                                  enum:
+                                    - DAY
+                                    - WEEK
+                                    - MONTH
+                                    - YEAR
+                                  default: MONTH
+                                value:
+                                  type: integer
+                                  minimum: 0
+                                  maximum: 1000
+                              required:
+                                - unit
+                                - value
+                          required:
+                            - type
+                            - price
+                            - subscriptionCadence
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - TIERED
+                            tiers:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  fromInclusive:
+                                    type: number
+                                    minimum: 0
+                                  toExclusive:
+                                    type: number
+                                    nullable: true
+                                    minimum: 0
+                                  rate:
+                                    type: number
+                                    nullable: true
+                                    minimum: 0
+                                  flatFee:
+                                    type: number
+                                    nullable: true
+                                    minimum: 0
+                                  packageSize:
+                                    type: number
+                                    nullable: true
+                                    minimum: 0
+                                required:
+                                  - fromInclusive
+                            subscriptionCadence:
+                              type: object
+                              nullable: true
+                              properties:
+                                unit:
+                                  type: string
+                                  enum:
+                                    - DAY
+                                    - WEEK
+                                    - MONTH
+                                    - YEAR
+                                  default: MONTH
+                                value:
+                                  type: integer
+                                  minimum: 0
+                                  maximum: 1000
+                              required:
+                                - unit
+                                - value
+                            autoUpgrade:
+                              type: boolean
+                            prorate:
+                              type: boolean
+                            isRevShare:
+                              type: boolean
+                            baseAmount:
+                              type: number
+                              minimum: 0
+                          required:
+                            - type
+                            - tiers
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - PER_UNIT
+                            price:
+                              type: number
+                              minimum: 0
+                            chunkSize:
+                              type: number
+                              minimum: 0
+                              exclusiveMinimum: true
+                          required:
+                            - type
+                            - price
+                    catalogProductId:
+                      type: string
+                      nullable: true
+                    productErpId:
+                      type: string
+                      nullable: true
+                  required:
+                    - displayName
+                    - scheduling
+                    - pricing
+                description: The products that the contract is associated with
               id:
                 type: string
               createdAt:
@@ -1153,7 +1931,7 @@ components:
             required:
               - startDate
               - customerId
-              - planId
+              - name
               - id
               - createdAt
               - updatedAt
@@ -1174,22 +1952,228 @@ components:
           type: string
           description: The start date of the contract
           format: date-time
-        endDate:
-          type: string
-          description: The end date of the contract
-          format: date-time
         customerId:
           type: string
           pattern: ^[0-9a-fA-F]{24}$
           description: The id of the customer that the contract is associated with
-        planId:
+        name:
           type: string
-          pattern: ^[0-9a-fA-F]{24}$
-          description: The id of the plan that the contract is associated with
+          description: The name of the contract
+        salesForceOpportunityId:
+          type: string
+          description: The id of the sales force opportunity that the contract is
+            associated with
+        endDate:
+          type: string
+          nullable: true
+          description: The end date of the contract
+          format: date-time
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              displayName:
+                type: string
+              description:
+                type: string
+                nullable: true
+              scheduling:
+                type: object
+                properties:
+                  billingDay:
+                    type: integer
+                    minimum: 1
+                    maximum: 31
+                    default: 1
+                    description: The day of the month that the product is billed
+                  duration:
+                    type: object
+                    properties:
+                      unit:
+                        type: string
+                        enum:
+                          - DAY
+                          - WEEK
+                          - MONTH
+                          - YEAR
+                        default: MONTH
+                      value:
+                        type: integer
+                        minimum: 0
+                        maximum: 1000
+                    required:
+                      - unit
+                      - value
+                    description: The duration of the product
+                required:
+                  - duration
+              pricing:
+                oneOf:
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - ONE_TIME
+                      price:
+                        type: number
+                        minimum: 0
+                    required:
+                      - type
+                      - price
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - CONTRACT_TERMS
+                      price:
+                        type: number
+                        minimum: 0
+                      installments:
+                        type: array
+                        nullable: true
+                        items:
+                          type: object
+                          properties:
+                            installmentDate:
+                              type: string
+                              format: date-time
+                            amount:
+                              type: number
+                              minimum: 0
+                          required:
+                            - installmentDate
+                            - amount
+                    required:
+                      - type
+                      - price
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - SUBSCRIPTION
+                      price:
+                        type: number
+                        minimum: 0
+                      subscriptionCadence:
+                        type: object
+                        properties:
+                          unit:
+                            type: string
+                            enum:
+                              - DAY
+                              - WEEK
+                              - MONTH
+                              - YEAR
+                            default: MONTH
+                          value:
+                            type: integer
+                            minimum: 0
+                            maximum: 1000
+                        required:
+                          - unit
+                          - value
+                    required:
+                      - type
+                      - price
+                      - subscriptionCadence
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - TIERED
+                      tiers:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            fromInclusive:
+                              type: number
+                              minimum: 0
+                            toExclusive:
+                              type: number
+                              nullable: true
+                              minimum: 0
+                            rate:
+                              type: number
+                              nullable: true
+                              minimum: 0
+                            flatFee:
+                              type: number
+                              nullable: true
+                              minimum: 0
+                            packageSize:
+                              type: number
+                              nullable: true
+                              minimum: 0
+                          required:
+                            - fromInclusive
+                      subscriptionCadence:
+                        type: object
+                        nullable: true
+                        properties:
+                          unit:
+                            type: string
+                            enum:
+                              - DAY
+                              - WEEK
+                              - MONTH
+                              - YEAR
+                            default: MONTH
+                          value:
+                            type: integer
+                            minimum: 0
+                            maximum: 1000
+                        required:
+                          - unit
+                          - value
+                      autoUpgrade:
+                        type: boolean
+                      prorate:
+                        type: boolean
+                      isRevShare:
+                        type: boolean
+                      baseAmount:
+                        type: number
+                        minimum: 0
+                    required:
+                      - type
+                      - tiers
+                  - type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - PER_UNIT
+                      price:
+                        type: number
+                        minimum: 0
+                      chunkSize:
+                        type: number
+                        minimum: 0
+                        exclusiveMinimum: true
+                    required:
+                      - type
+                      - price
+              catalogProductId:
+                type: string
+                nullable: true
+              productErpId:
+                type: string
+                nullable: true
+            required:
+              - displayName
+              - scheduling
+              - pricing
+          description: The products that the contract is associated with
       required:
         - startDate
         - customerId
-        - planId
+        - name
     CreateContractResponse:
       type: object
       properties:
@@ -1200,18 +2184,224 @@ components:
               type: string
               description: The start date of the contract
               format: date-time
-            endDate:
-              type: string
-              description: The end date of the contract
-              format: date-time
             customerId:
               type: string
               pattern: ^[0-9a-fA-F]{24}$
               description: The id of the customer that the contract is associated with
-            planId:
+            name:
               type: string
-              pattern: ^[0-9a-fA-F]{24}$
-              description: The id of the plan that the contract is associated with
+              description: The name of the contract
+            salesForceOpportunityId:
+              type: string
+              description: The id of the sales force opportunity that the contract is
+                associated with
+            endDate:
+              type: string
+              nullable: true
+              description: The end date of the contract
+              format: date-time
+            products:
+              type: array
+              items:
+                type: object
+                properties:
+                  displayName:
+                    type: string
+                  description:
+                    type: string
+                    nullable: true
+                  scheduling:
+                    type: object
+                    properties:
+                      billingDay:
+                        type: integer
+                        minimum: 1
+                        maximum: 31
+                        default: 1
+                        description: The day of the month that the product is billed
+                      duration:
+                        type: object
+                        properties:
+                          unit:
+                            type: string
+                            enum:
+                              - DAY
+                              - WEEK
+                              - MONTH
+                              - YEAR
+                            default: MONTH
+                          value:
+                            type: integer
+                            minimum: 0
+                            maximum: 1000
+                        required:
+                          - unit
+                          - value
+                        description: The duration of the product
+                    required:
+                      - duration
+                  pricing:
+                    oneOf:
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - ONE_TIME
+                          price:
+                            type: number
+                            minimum: 0
+                        required:
+                          - type
+                          - price
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - CONTRACT_TERMS
+                          price:
+                            type: number
+                            minimum: 0
+                          installments:
+                            type: array
+                            nullable: true
+                            items:
+                              type: object
+                              properties:
+                                installmentDate:
+                                  type: string
+                                  format: date-time
+                                amount:
+                                  type: number
+                                  minimum: 0
+                              required:
+                                - installmentDate
+                                - amount
+                        required:
+                          - type
+                          - price
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - SUBSCRIPTION
+                          price:
+                            type: number
+                            minimum: 0
+                          subscriptionCadence:
+                            type: object
+                            properties:
+                              unit:
+                                type: string
+                                enum:
+                                  - DAY
+                                  - WEEK
+                                  - MONTH
+                                  - YEAR
+                                default: MONTH
+                              value:
+                                type: integer
+                                minimum: 0
+                                maximum: 1000
+                            required:
+                              - unit
+                              - value
+                        required:
+                          - type
+                          - price
+                          - subscriptionCadence
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - TIERED
+                          tiers:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                fromInclusive:
+                                  type: number
+                                  minimum: 0
+                                toExclusive:
+                                  type: number
+                                  nullable: true
+                                  minimum: 0
+                                rate:
+                                  type: number
+                                  nullable: true
+                                  minimum: 0
+                                flatFee:
+                                  type: number
+                                  nullable: true
+                                  minimum: 0
+                                packageSize:
+                                  type: number
+                                  nullable: true
+                                  minimum: 0
+                              required:
+                                - fromInclusive
+                          subscriptionCadence:
+                            type: object
+                            nullable: true
+                            properties:
+                              unit:
+                                type: string
+                                enum:
+                                  - DAY
+                                  - WEEK
+                                  - MONTH
+                                  - YEAR
+                                default: MONTH
+                              value:
+                                type: integer
+                                minimum: 0
+                                maximum: 1000
+                            required:
+                              - unit
+                              - value
+                          autoUpgrade:
+                            type: boolean
+                          prorate:
+                            type: boolean
+                          isRevShare:
+                            type: boolean
+                          baseAmount:
+                            type: number
+                            minimum: 0
+                        required:
+                          - type
+                          - tiers
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - PER_UNIT
+                          price:
+                            type: number
+                            minimum: 0
+                          chunkSize:
+                            type: number
+                            minimum: 0
+                            exclusiveMinimum: true
+                        required:
+                          - type
+                          - price
+                  catalogProductId:
+                    type: string
+                    nullable: true
+                  productErpId:
+                    type: string
+                    nullable: true
+                required:
+                  - displayName
+                  - scheduling
+                  - pricing
+              description: The products that the contract is associated with
             id:
               type: string
             createdAt:
@@ -1223,12 +2413,284 @@ components:
           required:
             - startDate
             - customerId
-            - planId
+            - name
             - id
             - createdAt
             - updatedAt
       required:
         - contract
+    CreateMeasurementRequest:
+      type: object
+      properties:
+        customerId:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+          description: The customer for whom usage will be attributed
+        meterId:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+          description: The meter/product that is being measured
+        usageDate:
+          type: object
+          properties:
+            year:
+              type: integer
+              minimum: 0
+            month:
+              type: integer
+              minimum: 0
+              maximum: 12
+            day:
+              type: integer
+              minimum: 1
+              maximum: 31
+          required:
+            - year
+            - month
+            - day
+          description: The day the usage took place
+        value:
+          type: number
+          description: The updated value of product units consumed by the customer, for
+            the product for given day
+      required:
+        - customerId
+        - meterId
+        - usageDate
+        - value
+    CreateMeasurementResponse:
+      type: object
+      properties:
+        measurement:
+          type: object
+          properties:
+            customerId:
+              type: string
+              pattern: ^[0-9a-fA-F]{24}$
+              description: The customer for whom usage will be attributed
+            meterId:
+              type: string
+              pattern: ^[0-9a-fA-F]{24}$
+              description: The meter/product that is being measured
+            usageDate:
+              type: object
+              properties:
+                year:
+                  type: integer
+                  minimum: 0
+                month:
+                  type: integer
+                  minimum: 0
+                  maximum: 12
+                day:
+                  type: integer
+                  minimum: 1
+                  maximum: 31
+              required:
+                - year
+                - month
+                - day
+              description: The day the usage took place
+            value:
+              type: number
+              description: The updated value of product units consumed by the customer, for
+                the product for given day
+            id:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+          required:
+            - customerId
+            - meterId
+            - usageDate
+            - value
+            - id
+            - createdAt
+            - updatedAt
+      required:
+        - measurement
+    ListMeasurementsResponse:
+      type: object
+      properties:
+        measurements:
+          type: array
+          items:
+            type: object
+            properties:
+              customerId:
+                type: string
+                pattern: ^[0-9a-fA-F]{24}$
+                description: The customer for whom usage will be attributed
+              meterId:
+                type: string
+                pattern: ^[0-9a-fA-F]{24}$
+                description: The meter/product that is being measured
+              usageDate:
+                type: object
+                properties:
+                  year:
+                    type: integer
+                    minimum: 0
+                  month:
+                    type: integer
+                    minimum: 0
+                    maximum: 12
+                  day:
+                    type: integer
+                    minimum: 1
+                    maximum: 31
+                required:
+                  - year
+                  - month
+                  - day
+                description: The day the usage took place
+              value:
+                type: number
+                description: The updated value of product units consumed by the customer, for
+                  the product for given day
+              id:
+                type: string
+              createdAt:
+                type: string
+                format: date-time
+              updatedAt:
+                type: string
+                format: date-time
+            required:
+              - customerId
+              - meterId
+              - usageDate
+              - value
+              - id
+              - createdAt
+              - updatedAt
+        total:
+          type: number
+        hasMore:
+          type: boolean
+        nextCursor:
+          type: string
+      required:
+        - measurements
+        - total
+        - hasMore
+    GetMeasurementResponse:
+      type: object
+      properties:
+        measurement:
+          type: object
+          properties:
+            customerId:
+              type: string
+              pattern: ^[0-9a-fA-F]{24}$
+              description: The customer for whom usage will be attributed
+            meterId:
+              type: string
+              pattern: ^[0-9a-fA-F]{24}$
+              description: The meter/product that is being measured
+            usageDate:
+              type: object
+              properties:
+                year:
+                  type: integer
+                  minimum: 0
+                month:
+                  type: integer
+                  minimum: 0
+                  maximum: 12
+                day:
+                  type: integer
+                  minimum: 1
+                  maximum: 31
+              required:
+                - year
+                - month
+                - day
+              description: The day the usage took place
+            value:
+              type: number
+              description: The updated value of product units consumed by the customer, for
+                the product for given day
+            id:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+          required:
+            - customerId
+            - meterId
+            - usageDate
+            - value
+            - id
+            - createdAt
+            - updatedAt
+      required:
+        - measurement
+    DeleteMeasurementResponse:
+      type: object
+      properties:
+        measurement:
+          type: object
+          properties:
+            customerId:
+              type: string
+              pattern: ^[0-9a-fA-F]{24}$
+              description: The customer for whom usage will be attributed
+            meterId:
+              type: string
+              pattern: ^[0-9a-fA-F]{24}$
+              description: The meter/product that is being measured
+            usageDate:
+              type: object
+              properties:
+                year:
+                  type: integer
+                  minimum: 0
+                month:
+                  type: integer
+                  minimum: 0
+                  maximum: 12
+                day:
+                  type: integer
+                  minimum: 1
+                  maximum: 31
+              required:
+                - year
+                - month
+                - day
+              description: The day the usage took place
+            value:
+              type: number
+              description: The updated value of product units consumed by the customer, for
+                the product for given day
+            id:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+            deletedAt:
+              type: string
+          required:
+            - customerId
+            - meterId
+            - usageDate
+            - value
+            - id
+            - createdAt
+            - updatedAt
+            - deletedAt
+      required:
+        - measurement
     FullDayPeriod:
       type: object
       properties:
@@ -1398,6 +2860,84 @@ components:
             to expire every hour.
       required:
         - accessToken
+    DeleteEventsByRefsRequest:
+      type: object
+      properties:
+        refs:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          minItems: 1
+          maxItems: 1000
+      required:
+        - refs
+    DeleteEventsByRefsResponse:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The distinctive label assigned to an event, serving as a critical
+                  identifier for categorizing and pricing events within the
+                  system's backend infrastructure.
+                example: api_call
+              timestamp:
+                type: string
+                description: The temporal marker denoting the exact moment of event occurrence.
+                  The timestamp is formatted as an ISO 8601 string and is
+                  expressed in Coordinated Universal Time (UTC). i.e.
+                  YYYY-MM-DDTHH:MM:SS.SSSZ
+                format: date-time
+                example: 2023-09-13T18:25:43.511Z
+              customerAlias:
+                type: string
+                minLength: 1
+                description: A pseudonymous or otherwise obfuscated identifier uniquely assigned
+                  to each customer.
+                example: customer_12345
+              ref:
+                type: string
+                description: A universally unique identifier (UUID) or other form of
+                  high-entropy string serving as an immutable reference for each
+                  event entry.
+                example: 4f6cf35x-2c4y-483z-a0a9-158621f77a21
+              data:
+                type: object
+                nullable: true
+                additionalProperties:
+                  nullable: true
+                description: A schema-less JSON object encapsulating miscellaneous attributes
+                  and metrics associated with the event.
+                example:
+                  key1: processing_duration
+                  key2: api_url
+              id:
+                type: string
+              createdAt:
+                type: string
+                format: date-time
+              updatedAt:
+                type: string
+                format: date-time
+              deletedAt:
+                type: string
+            required:
+              - name
+              - timestamp
+              - customerAlias
+              - ref
+              - id
+              - createdAt
+              - updatedAt
+              - deletedAt
+          description: The events that were deleted
+      required:
+        - events
     Event:
       type: object
       properties:
@@ -1758,251 +3298,88 @@ components:
           description: The event matching the provided refId
       required:
         - event
-    ContractStatus:
-      type: string
-      enum:
-        - Active
-        - Inactive
-        - Terminated
-        - PendingTermination
-        - Error
-    Currency:
-      type: string
-      enum:
-        - USD
-        - EUR
-        - GBP
-        - ILS
-    GetProductsUsageReportResponse:
-      type: object
-      properties:
-        contractStatus:
-          $ref: "#/components/schemas/ContractStatus"
-        customerName:
-          type: string
-        startDate:
-          type: string
-          format: date-time
-        endDate:
-          type: string
-          format: date-time
-        contractStartDate:
-          type: string
-          format: date-time
-        daysToContractEnd:
-          type: number
-        productVariantName:
-          type: string
-        commitmentConsumptionPercentage:
-          type: number
-        totalCommitmentCurrencyAmount:
-          type: number
-        totalCommitmentUnitsAmount:
-          type: number
-        commercialTermsAmount:
-          type: number
-        erpId:
-          type: string
-        currency:
-          $ref: "#/components/schemas/Currency"
-        usageConsumptionCurrencyAmount:
-          type: number
-        usageConsumptionUnitsAmount:
-          type: number
-      required:
-        - contractStatus
-        - customerName
-        - startDate
-        - endDate
-        - contractStartDate
-        - productVariantName
-        - currency
-    GetCommitmentReportResponse:
-      type: object
-      properties:
-        contractStatus:
-          $ref: "#/components/schemas/ContractStatus"
-        customerName:
-          type: string
-        startDate:
-          type: string
-          format: date-time
-        endDate:
-          type: string
-          format: date-time
-        contractStartDate:
-          type: string
-          format: date-time
-        daysToContractEnd:
-          type: number
-        productVariantName:
-          type: string
-        commitmentConsumptionCurrencyAmount:
-          type: number
-        commitmentConsumptionUnitsAmount:
-          type: number
-        commitmentConsumptionPercentage:
-          type: number
-        totalCommitmentCurrencyAmount:
-          type: number
-        totalCommitmentUnitsAmount:
-          type: number
-        commercialTermsAmount:
-          type: number
-        erpId:
-          type: string
-        currency:
-          $ref: "#/components/schemas/Currency"
-      required:
-        - contractStatus
-        - customerName
-        - startDate
-        - endDate
-        - contractStartDate
-        - productVariantName
-        - commitmentConsumptionCurrencyAmount
-        - commitmentConsumptionUnitsAmount
-        - commitmentConsumptionPercentage
-        - totalCommitmentCurrencyAmount
-        - totalCommitmentUnitsAmount
-        - currency
-    NetSuiteSyncInvoicesRequest:
-      type: object
-      properties:
-        integrationType:
-          type: string
-          enum:
-            - upsertInvoice
-        uid:
-          type: string
-        data:
-          type: object
-          properties:
-            startDate:
-              type: string
-              format: date-time
-            endDate:
-              type: string
-              format: date-time
-            tranDate:
-              type: string
-              format: date-time
-            memo:
-              type: string
-            externalId:
-              type: string
-              pattern: ^[0-9a-fA-F]{24}$
-            entity:
-              type: object
-              properties:
-                id:
-                  type: string
-              required:
-                - id
-            account:
-              type: object
-              properties:
-                id:
-                  type: string
-              required:
-                - id
-            item:
-              type: object
-              properties:
-                items:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      item:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                        required:
-                          - id
-                      quantity:
-                        type: number
-                      amount:
-                        type: number
-                      description:
-                        type: string
-                      memo:
-                        type: string
-                    required:
-                      - item
-                      - quantity
-                      - amount
-              required:
-                - items
-            discountItem:
-              type: object
-              properties:
-                id:
-                  type: string
-              required:
-                - id
-            discountRate:
-              type: number
-          required:
-            - startDate
-            - endDate
-            - tranDate
-            - memo
-            - externalId
-            - entity
-            - item
-      required:
-        - integrationType
-        - uid
-        - data
-    NetSuiteSyncInvoicesResponse:
-      type: object
-      properties:
-        recordId:
-          type: string
-        tranId:
-          type: string
-      required:
-        - recordId
-        - tranId
-    NetSuiteExportSalesOrderRequest:
-      type: object
-      properties:
-        contractId:
-          type: string
-          pattern: ^[0-9a-fA-F]{24}$
-        productsIds:
-          type: array
-          items:
-            type: string
-            pattern: ^[0-9a-fA-F]{24}$
-        subsidiaryId:
-          type: string
-      required:
-        - contractId
-        - productsIds
-        - subsidiaryId
     BillingCycleStatus:
       type: string
       enum:
         - Grant
         - Deduct
+    IntegrationProviders:
+      type: string
+      enum:
+        - Hubspot
+        - Stripe
+        - NetSuite
+        - Salesforce
+        - QuickBooks
+        - Slack
+        - S3
+        - Vayu
+        - Morning
+    SyncStatus:
+      type: string
+      enum:
+        - None
+        - Synced
+        - Failed
+    IntegrationEntity:
+      type: object
+      properties:
+        updatedAt:
+          type: string
+          format: date-time
+        integrationProvider:
+          $ref: "#/components/schemas/IntegrationProviders"
+        integrationExternalId:
+          type: string
+        syncStatus:
+          $ref: "#/components/schemas/SyncStatus"
+        metadata:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+        rawSyncedData:
+          type: object
+          nullable: true
+          additionalProperties:
+            nullable: true
+      required:
+        - updatedAt
+        - integrationProvider
+        - integrationExternalId
+        - syncStatus
     CreditLedgerEntry:
       type: object
       properties:
+        id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        createdAt:
+          type: string
+          format: date-time
         type:
           $ref: "#/components/schemas/BillingCycleStatus"
         amount:
           type: number
-        invoiceId:
-          type: string
         balanceAfterEntry:
           type: number
+        invoiceId:
+          type: string
+        erpId:
+          type: string
+        contractId:
+          type: string
+        integrationEntities:
+          type: array
+          items:
+            $ref: "#/components/schemas/IntegrationEntity"
       required:
+        - id
+        - createdAt
         - type
         - amount
         - balanceAfterEntry
+        - integrationEntities
     ListCreditLedgerEntriesResponse:
       type: object
       properties:
@@ -2046,6 +3423,12 @@ components:
         - Overage
         - UpcomingRenewal
         - InvoiceApproved
+        - CustomerPortalLinkSent
+        - NewCustomerWithoutContract
+        - MonthEndReport
+        - UnchargedEvents
+        - TierCrossed
+        - CommitmentCrossed
     WebhookSubscribeRequest:
       type: object
       properties:
@@ -2056,22 +3439,98 @@ components:
       required:
         - callbackUrl
         - eventType
+    ProductConsumption:
+      type: object
+      properties:
+        productId:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+          description: The id of the product.
+        productName:
+          type: string
+          minLength: 1
+          description: The name of the product.
+          example: Vayu Product
+        provisionedAmount:
+          type: number
+          minimum: 0
+          description: The amount of units provisioned to the customer.
+          example: 10
+        consumedAmount:
+          type: number
+          minimum: 0
+          description: The amount of units consumed by the customer.
+          example: 10
+        usagePercentage:
+          type: number
+          minimum: 0
+          description: The percentage of the provisioned amount that has been consumed.
+        hasAccess:
+          type: boolean
+          description: Whether the customer has access to the product.
+          example: true
+        remainingAmount:
+          type: number
+          description: The amount of units remaining to consume.
+          example: 10
+        exceededAmount:
+          type: number
+          description: The amount of units exceeded.
+          example: 10
+      required:
+        - productId
+        - productName
+        - provisionedAmount
+        - consumedAmount
+        - usagePercentage
+        - hasAccess
+    GetCustomerProductsConsumptionsResponse:
+      type: object
+      properties:
+        productsConsumptions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductConsumption"
+      required:
+        - productsConsumptions
+    GetCustomerProductsConsumptionsByAliasResponse:
+      type: object
+      properties:
+        productsConsumptions:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductConsumption"
+      required:
+        - productsConsumptions
+    GetProductConsumptionResponse:
+      type: object
+      properties:
+        productConsumption:
+          allOf:
+            - $ref: "#/components/schemas/ProductConsumption"
+            - description: The product consumption data
+      required:
+        - productConsumption
     Limit:
       type: number
+      minimum: 1
       maximum: 1000
       default: 10
     Cursor:
       type: string
+    CatalogProductId:
+      type: string
+      pattern: ^[0-9a-fA-F]{24}$
     CustomerId:
       type: string
       pattern: ^[0-9a-fA-F]{24}$
     MeterId:
       type: string
       pattern: ^[0-9a-fA-F]{24}$
-    PlanId:
+    ContractId:
       type: string
       pattern: ^[0-9a-fA-F]{24}$
-    ContractId:
+    MeasurementId:
       type: string
       pattern: ^[0-9a-fA-F]{24}$
     InvoiceId:
@@ -2088,11 +3547,149 @@ components:
       minLength: 1
     RefId:
       type: string
-    ReportId:
-      type: string
     ExternalId:
       type: string
+    Alias:
+      type: string
+    ProductId:
+      type: string
 paths:
+  /catalogProducts:
+    post:
+      tags:
+        - catalog-products
+      operationId: createCatalogProduct
+      description: Create a new Catalog product.
+      summary: Create Catalog product
+      security:
+        - BearerAuthorizer: []
+      requestBody:
+        $ref: "#/components/requestBodies/CreateCatalogProductRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/CreateCatalogProductResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+    get:
+      tags:
+        - catalog-products
+      operationId: listCatalogProducts
+      description: Get a list of Catalog products.
+      summary: List Catalog products
+      security:
+        - BearerAuthorizer: []
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/Limit"
+          required: false
+          in: query
+          name: limit
+        - schema:
+            $ref: "#/components/schemas/Cursor"
+          required: false
+          in: query
+          name: cursor
+      responses:
+        "200":
+          $ref: "#/components/responses/ListCatalogProductsResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+  /catalogProducts/{catalogProductId}:
+    get:
+      tags:
+        - catalog-products
+      operationId: getCatalogProduct
+      description: Get a Catalog product by id.
+      summary: Get Catalog product
+      security:
+        - BearerAuthorizer: []
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/CatalogProductId"
+          required: true
+          in: path
+          name: catalogProductId
+      responses:
+        "200":
+          $ref: "#/components/responses/GetCatalogProductResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+    put:
+      tags:
+        - catalog-products
+      operationId: updateCatalogProduct
+      description: Update a Catalog product by id.
+      summary: Update Catalog product
+      security:
+        - BearerAuthorizer: []
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateCatalogProductRequest"
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/CatalogProductId"
+          required: true
+          in: path
+          name: catalogProductId
+      responses:
+        "200":
+          $ref: "#/components/responses/UpdateCatalogProductResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+        - catalog-products
+      operationId: deleteCatalogProduct
+      description: Delete a Catalog product by id.
+      summary: Delete Catalog product
+      security:
+        - BearerAuthorizer: []
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/CatalogProductId"
+          required: true
+          in: path
+          name: catalogProductId
+      responses:
+        "200":
+          $ref: "#/components/responses/DeleteCatalogProductResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
   /customers:
     post:
       tags:
@@ -2344,92 +3941,6 @@ paths:
           description: Too Many Requests
         "500":
           description: Internal Server Error
-  /plans/{planId}:
-    get:
-      tags:
-        - plans
-      operationId: getPlan
-      description: Get a Plan by id.
-      summary: Get Plan
-      security:
-        - BearerAuthorizer: []
-      parameters:
-        - schema:
-            $ref: "#/components/schemas/PlanId"
-          required: true
-          in: path
-          name: planId
-      responses:
-        "200":
-          $ref: "#/components/responses/GetPlanResponse"
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-        "429":
-          description: Too Many Requests
-        "500":
-          description: Internal Server Error
-    delete:
-      tags:
-        - plans
-      operationId: deletePlan
-      description: Delete a Plan by id.
-      summary: Delete Plan
-      security:
-        - BearerAuthorizer: []
-      parameters:
-        - schema:
-            $ref: "#/components/schemas/PlanId"
-          required: true
-          in: path
-          name: planId
-      responses:
-        "200":
-          $ref: "#/components/responses/DeletePlanResponse"
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-        "429":
-          description: Too Many Requests
-        "500":
-          description: Internal Server Error
-  /plans:
-    get:
-      tags:
-        - plans
-      operationId: listPlans
-      description: Get a list of Plans.
-      summary: List Plans
-      security:
-        - BearerAuthorizer: []
-      parameters:
-        - schema:
-            $ref: "#/components/schemas/Limit"
-          required: false
-          in: query
-          name: limit
-        - schema:
-            $ref: "#/components/schemas/Cursor"
-          required: false
-          in: query
-          name: cursor
-      responses:
-        "200":
-          $ref: "#/components/responses/ListPlansResponse"
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "429":
-          description: Too Many Requests
-        "500":
-          description: Internal Server Error
   /contracts/{contractId}:
     get:
       tags:
@@ -2537,6 +4048,113 @@ paths:
           description: Too Many Requests
         "500":
           description: Internal Server Error
+  /measurements:
+    post:
+      tags:
+        - measurements
+      operationId: createMeasurement
+      description: Create a new Measurement.
+      summary: Create Measurement
+      security:
+        - BearerAuthorizer: []
+      requestBody:
+        $ref: "#/components/requestBodies/CreateMeasurementRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/CreateMeasurementResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+    get:
+      tags:
+        - measurements
+      operationId: listMeasurements
+      description: Get a list of Measurements.
+      summary: List Measurements
+      security:
+        - BearerAuthorizer: []
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/Limit"
+          required: false
+          in: query
+          name: limit
+        - schema:
+            $ref: "#/components/schemas/Cursor"
+          required: false
+          in: query
+          name: cursor
+      responses:
+        "200":
+          $ref: "#/components/responses/ListMeasurementsResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+  /measurements/{measurementId}:
+    get:
+      tags:
+        - measurements
+      operationId: getMeasurement
+      description: Get a Measurement by id.
+      summary: Get Measurement
+      security:
+        - BearerAuthorizer: []
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/MeasurementId"
+          required: true
+          in: path
+          name: measurementId
+      responses:
+        "200":
+          $ref: "#/components/responses/GetMeasurementResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+    delete:
+      tags:
+        - measurements
+      operationId: deleteMeasurement
+      description: Delete a Measurement by id.
+      summary: Delete Measurement
+      security:
+        - BearerAuthorizer: []
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/MeasurementId"
+          required: true
+          in: path
+          name: measurementId
+      responses:
+        "200":
+          $ref: "#/components/responses/DeleteMeasurementResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
   /invoices/{invoiceId}:
     get:
       tags:
@@ -2615,6 +4233,30 @@ paths:
           description: Bad Request
         "401":
           description: Unauthorized
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+  /events/delete-by-refs:
+    post:
+      tags:
+        - events
+      operationId: deleteEventsByRefs
+      description: Delete multiple events, identified by ref, in a single request.
+      summary: Delete events by refs
+      security:
+        - BearerAuthorizer: []
+      requestBody:
+        $ref: "#/components/requestBodies/DeleteEventsByRefsRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/DeleteEventsByRefsResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
         "429":
           description: Too Many Requests
         "500":
@@ -2771,111 +4413,6 @@ paths:
           description: Too Many Requests
         "500":
           description: Internal Server Error
-  /report/products-usage:
-    get:
-      tags:
-        - reports
-      operationId: getProductsUsageReport
-      description: Use this endpoint to get the products usage report.
-      summary: Get products usage report
-      security:
-        - BearerAuthorizer: []
-      parameters:
-        - schema:
-            $ref: "#/components/schemas/ReportId"
-          required: false
-          in: query
-          name: reportId
-        - schema:
-            $ref: "#/components/schemas/Limit"
-          required: false
-          in: query
-          name: limit
-        - schema:
-            $ref: "#/components/schemas/Cursor"
-          required: false
-          in: query
-          name: cursor
-      responses:
-        "200":
-          $ref: "#/components/responses/GetProductsUsageReportResponse"
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "429":
-          description: Too Many Requests
-        "500":
-          description: Internal Server Error
-  /report/commitment:
-    get:
-      tags:
-        - reports
-      operationId: getCommitmentReportResponse
-      summary: "Get commitment report "
-      security:
-        - BearerAuthorizer: []
-      parameters:
-        - schema:
-            $ref: "#/components/schemas/ReportId"
-          required: false
-          in: query
-          name: reportId
-      responses:
-        "200":
-          $ref: "#/components/responses/GetCommitmentReportResponse"
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "429":
-          description: Too Many Requests
-        "500":
-          description: Internal Server Error
-  /integrations/netsuite/sync-invoices:
-    post:
-      tags:
-        - integrations
-      operationId: net-suite-sync-invoices
-      description: This endpoint is used to sync invoices to NetSuite.
-      summary: Sync invoices to NetSuite
-      security:
-        - BearerAuthorizer: []
-      requestBody:
-        $ref: "#/components/requestBodies/NetSuiteSyncInvoicesRequest"
-      responses:
-        "200":
-          $ref: "#/components/responses/NetSuiteSyncInvoicesResponse"
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "429":
-          description: Too Many Requests
-        "500":
-          description: Internal Server Error
-  /integrations/netsuite/export-sales-order:
-    post:
-      tags:
-        - integrations
-      operationId: export-net-suite-sales-order
-      description: This endpoint is used to export sales order to NetSuite.
-      summary: Export sales order to NetSuite
-      security:
-        - BearerAuthorizer: []
-      requestBody:
-        $ref: "#/components/requestBodies/NetSuiteExportSalesOrderRequest"
-      responses:
-        "200":
-          $ref: "#/components/responses/RequestSuccess"
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "429":
-          description: Too Many Requests
-        "500":
-          description: Internal Server Error
   /credits:
     get:
       tags:
@@ -3007,6 +4544,90 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/GetCustomerResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+  /customers/products-consumptions/{customerId}:
+    get:
+      tags:
+        - customers
+      operationId: getCustomerProductsConsumptions
+      description: Use this endpoint to get the products consumptions by the customer id.
+      summary: Get products consumptions by customer id
+      security:
+        - BearerAuthorizer: []
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/CustomerId"
+          required: true
+          in: path
+          name: customerId
+      responses:
+        "200":
+          $ref: "#/components/responses/GetCustomerProductsConsumptionsResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+  /customers/products-consumptions/alias/{alias}:
+    get:
+      tags:
+        - customers
+      operationId: getCustomerProductsConsumptionsByAlias
+      description: Use this endpoint to get the products consumptions by the customer alias.
+      summary: Get products consumptions by customer alias
+      security:
+        - BearerAuthorizer: []
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/Alias"
+          required: true
+          in: path
+          name: alias
+      responses:
+        "200":
+          $ref: "#/components/responses/GetCustomerProductsConsumptionsByAliasResponse"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not Found
+        "429":
+          description: Too Many Requests
+        "500":
+          description: Internal Server Error
+  /product-consumption/{productId}:
+    get:
+      tags:
+        - product-consumptions
+      operationId: getProductConsumption
+      description: Use this action to get the consumption data for a product
+      summary: Get product consumption
+      security:
+        - BearerAuthorizer: []
+      parameters:
+        - schema:
+            $ref: "#/components/schemas/ProductId"
+          required: true
+          in: path
+          name: productId
+      responses:
+        "200":
+          $ref: "#/components/responses/GetProductConsumptionResponse"
         "400":
           description: Bad Request
         "401":
