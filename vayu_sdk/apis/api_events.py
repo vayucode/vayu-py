@@ -21,7 +21,6 @@ class EventsAPI:
     __client: EventsApi = None
 
     def __init__(self, vayu_client: VayuClient):
-        vayu_client.validate_logged_in()
         self.__client = EventsApi(vayu_client.client)
 
     def get(self, ref: str):

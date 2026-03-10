@@ -8,9 +8,9 @@ class Vayu:
     __client: VayuClient = None
 
     def __init__(self, api_key: str, host: str = None):
-        self.__client = None
         self.__host = host
         self.__api_key = api_key
+        self.__client = VayuClient(self.__api_key, self.__host)
 
     @property
     def contracts(self) -> ContractsAPI:
@@ -37,5 +37,5 @@ class Vayu:
         return WebhooksAPI(self.__client)
     
     def login(self):
-        self.__client = VayuClient(self.__api_key, self.__host)
+        """Deprecated: Authentication is now handled automatically. You can remove this call."""
         self.__client.login()

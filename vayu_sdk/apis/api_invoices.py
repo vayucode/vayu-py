@@ -11,7 +11,6 @@ class InvoicesAPI:
     __client: InvoicesApi = None
 
     def __init__(self, vayu_client: VayuClient):
-        vayu_client.validate_logged_in()
         self.__client = InvoicesApi(vayu_client.client)
     
     def list(self, limit: int = None, cursor: int = None):

@@ -7,7 +7,6 @@ class WebhooksAPI:
     __client: WebhooksApi = None
 
     def __init__(self, vayu_client: VayuClient):
-        vayu_client.validate_logged_in()
         self.__client = WebhooksApi(vayu_client.client)
 
     def subscribe(self, callback_url: str, event_type: NotificationEventType):
