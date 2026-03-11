@@ -15,6 +15,8 @@ from openapi.models.create_customer_response import CreateCustomerResponse
 from openapi.models.update_customer_response import UpdateCustomerResponse
 from openapi.models.delete_customer_response import DeleteCustomerResponse
 from openapi.models.address import Address
+from openapi.models.get_customer_products_consumptions_response import GetCustomerProductsConsumptionsResponse
+from openapi.models.get_customer_products_consumptions_by_alias_response import GetCustomerProductsConsumptionsByAliasResponse
 
 
 Customer = CreateCustomerResponseCustomer
@@ -58,3 +60,9 @@ class CustomersAPI:
         response = self.__client.delete_customer(customer_id=id)
 
         return response
+
+    def get_products_consumptions(self, customer_id: str):
+        return self.__client.get_customer_products_consumptions(customer_id=customer_id)
+
+    def get_products_consumptions_by_alias(self, alias: str):
+        return self.__client.get_customer_products_consumptions_by_alias(alias=alias)
