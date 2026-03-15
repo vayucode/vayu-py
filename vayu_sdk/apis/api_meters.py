@@ -20,7 +20,6 @@ class MetersAPI:
     __client: MetersApi = None
 
     def __init__(self, vayu_client: VayuClient):
-        vayu_client.validate_logged_in()
         self.__client = MetersApi(vayu_client.client)
 
     def list(self, limit: int = None, cursor: int = None):
