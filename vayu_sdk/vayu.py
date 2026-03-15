@@ -35,7 +35,23 @@ class Vayu:
     @property
     def webhooks(self) -> WebhooksAPI:
         return WebhooksAPI(self.__client)
-    
+
+    @property
+    def credits(self) -> CreditsAPI:
+        return CreditsAPI(self.__client)
+
+    @property
+    def measurements(self) -> MeasurementsAPI:
+        return MeasurementsAPI(self.__client)
+
+    @property
+    def catalog_products(self) -> CatalogProductsAPI:
+        return CatalogProductsAPI(self.__client)
+
+    @property
+    def product_consumptions(self) -> ProductConsumptionsAPI:
+        return ProductConsumptionsAPI(self.__client)
+
     def login(self):
         """Deprecated: Authentication is now handled automatically. You can remove this call."""
         self.__client.login()
